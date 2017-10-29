@@ -449,7 +449,11 @@ typedef unsigned __int64 uint64_t;
 #endif /* GPRC_PRINT_FORMAT_CHECK */
 
 #if GPR_FORBID_UNREACHABLE_CODE
-#define GPR_UNREACHABLE_CODE(STATEMENT)
+#define GPR_UNREACHABLE_CODE(STATEMENT)             \
+    do {                                            \
+        abort();                                    \
+        STATEMENT;                                        \
+    } while (0)
 #else
 #define GPR_UNREACHABLE_CODE(STATEMENT)             \
   do {                                              \
