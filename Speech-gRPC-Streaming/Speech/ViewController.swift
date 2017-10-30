@@ -18,6 +18,7 @@ import AVFoundation
 import googleapis
 
 let SAMPLE_RATE = 16000
+var currentText = ""
 
 class ViewController : UIViewController, AudioControllerDelegate {
   @IBOutlet weak var textView: UITextView!
@@ -66,17 +67,39 @@ class ViewController : UIViewController, AudioControllerDelegate {
                 strongSelf.textView.text = error.localizedDescription
             } else if let response = response {
                 var finished = false
-                print(response)
+                //print("response: ", response["results"])
                 for result in response.resultsArray! {
+                    print("result: ", result)
+                    
                     if let result = result as? StreamingRecognitionResult {
                         if result.isFinal {
                             finished = true
                         }
+                        //for alternative in result.alternativesArray{
+                            var alternative = result.alternativesArray[0]
+                            if let alternative = alternative as? SpeechRecognitionAlternative{
+                                print("alternative transcript: ", alternative.transcript)
+                                //strongSelf.textView.text = currentText.append(alternative.transcript as String)
+                                strongSelf.textView.text = currentText + alternative.transcript
+                                //strongSelf.textView.text.append(alternative.transcript)
+                                if finished{
+                                    print("got here")
+                                    strongSelf.textView.text = currentText + alternative.transcript
+                                }
+                            }
+                            
+                        //}
                     }
+                    
+                    
                 }
-                strongSelf.textView.text = response.description
+                //strongSelf.textView.text = response.description
+                
                 if finished {
-                    strongSelf.stopAudio(strongSelf)
+                    //strongSelf.stopAudio(strongSelf)
+                    print("is finished!")
+                    //strongSelf.textView.text.append(alternative.transcript)
+                    currentText = strongSelf.textView.text + " "
                 }
             }
       })
