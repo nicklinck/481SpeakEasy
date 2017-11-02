@@ -19,17 +19,51 @@ import googleapis
 
 let SAMPLE_RATE = 16000
 var currentText = ""
+//var previousStringsStack = []
+
+extension String {
+    var byWords: [String] {
+        var byWords:[String] = []
+        enumerateSubstrings(in: startIndex..<endIndex, options: .byWords) {
+            guard let word = $0 else { return }
+            print($1,$2,$3)
+            byWords.append(word)
+        }
+        return byWords
+    }
+    func firstWords(_ max: Int) -> [String] {
+        return Array(byWords.prefix(max))
+    }
+    var firstWord: String {
+        return byWords.first ?? ""
+    }
+    func lastWords(_ max: Int) -> [String] {
+        return Array(byWords.suffix(max))
+    }
+    var lastWord: String {
+        return byWords.last ?? ""
+    }
+}
 
 class ViewController : UIViewController, AudioControllerDelegate {
   @IBOutlet weak var textView: UITextView!
   var audioData: NSMutableData!
+    var timer = Timer()
 
   override func viewDidLoad() {
     super.viewDidLoad()
     AudioController.sharedInstance.delegate = self
   }
 
+  func invalidateTimer(){
+    timer.invalidate()
+    _ = AudioController.sharedInstance.stop()
+    SpeechRecognitionService.sharedInstance.stopStreaming()
+    recordAudio(self)
+  }
+
   @IBAction func recordAudio(_ sender: NSObject) {
+    timer = Timer.scheduledTimer(timeInterval: 60, target:self, selector: #selector(ViewController.invalidateTimer), userInfo: nil, repeats: true)
     let audioSession = AVAudioSession.sharedInstance()
     do {
       try audioSession.setCategory(AVAudioSessionCategoryRecord)
@@ -43,6 +77,7 @@ class ViewController : UIViewController, AudioControllerDelegate {
   }
 
   @IBAction func stopAudio(_ sender: NSObject) {
+    timer.invalidate()
     _ = AudioController.sharedInstance.stop()
     SpeechRecognitionService.sharedInstance.stopStreaming()
   }
@@ -69,7 +104,7 @@ class ViewController : UIViewController, AudioControllerDelegate {
                 var finished = false
                 //print("response: ", response["results"])
                 for result in response.resultsArray! {
-                    print("result: ", result)
+                   // print("result: ", result)
                     
                     if let result = result as? StreamingRecognitionResult {
                         if result.isFinal {
@@ -78,13 +113,14 @@ class ViewController : UIViewController, AudioControllerDelegate {
                         //for alternative in result.alternativesArray{
                             var alternative = result.alternativesArray[0]
                             if let alternative = alternative as? SpeechRecognitionAlternative{
-                                print("alternative transcript: ", alternative.transcript)
-                                //strongSelf.textView.text = currentText.append(alternative.transcript as String)
-                                strongSelf.textView.text = currentText + alternative.transcript
-                                //strongSelf.textView.text.append(alternative.transcript)
+                                //print("alternative transcript: ", alternative.transcript)
+                                if result.stability > 0.8 {
+                                    strongSelf.textView.text = currentText + alternative.transcript
+                                    //previousStringsStack.append(strongSelf.textView.text.lastWord)
+                                }
                                 if finished{
                                     print("got here")
-                                    strongSelf.textView.text = currentText + alternative.transcript
+                                    //strongSelf.textView.text = currentText + alternative.transcript
                                 }
                             }
                             
@@ -106,4 +142,15 @@ class ViewController : UIViewController, AudioControllerDelegate {
       self.audioData = NSMutableData()
     }
   }
+    
+    @IBAction func undoButtonPressed(_ sender: Any) {
+        var tempText = self.textView.text
+        let endIndex = tempText?.index((tempText?.endIndex)!, offsetBy: -1*((tempText?.lastWord.count)!+1))
+        self.textView.text = tempText?.substring(with: tempText!.startIndex..<endIndex)
+        stopAudio(self)
+        recordAudio(self)
+        
+    }
+    
+    
 }
