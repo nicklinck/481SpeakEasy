@@ -93,7 +93,7 @@ class SettingTableViewController: UITableViewController {
             for buttons in buttonType {
                 buttons.setTitleColor(.white, for: .normal)
             }
-            buttonType[currentButton].setTitleColor(.red, for: .normal)
+            buttonType[currentButton].setTitleColor(UIColor(red: 61/255.0, green: 136/255.0, blue: 209/255.0, alpha: 1.0), for: .normal)
         }
         if(buttonType == fontColorButtons) {
             current_font_color_int = currentButton

@@ -184,7 +184,7 @@
         <scene sceneID="GQW-fh-cE5">
             <objects>
                 <tableViewController id="B7g-1i-zl8" customClass="SettingTableViewController" customModule="Speech" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="singleLineEtched" rowHeight="60" estimatedRowHeight="100" sectionHeaderHeight="18" sectionFooterHeight="18" id="P0h-ta-nmR">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" rowHeight="60" estimatedRowHeight="100" sectionHeaderHeight="18" sectionFooterHeight="18" id="P0h-ta-nmR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
