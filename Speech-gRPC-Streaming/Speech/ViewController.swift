@@ -67,7 +67,7 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
     view.backgroundColor = backColor
   }
 
-  func invalidateTimer(){
+  @objc func invalidateTimer(){
     timer.invalidate()
     _ = AudioController.sharedInstance.stop()
     SpeechRecognitionService.sharedInstance.stopStreaming()
@@ -172,11 +172,13 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
     
     @IBOutlet weak var undoButton: UIButton!
     @IBAction func undoButtonPressed(_ sender: Any) {
-        let tempText = self.textView.text
+        /*let tempText = self.textView.text
         let endIndex = tempText?.index((tempText?.endIndex)!, offsetBy: -1*((tempText?.lastWord.count)!+1))
         self.textView.text = tempText?.substring(with: tempText!.startIndex..<endIndex)
         stopAudio(self)
         recordAudio(self)
+    */
+        print("undo")
         
     }
     
