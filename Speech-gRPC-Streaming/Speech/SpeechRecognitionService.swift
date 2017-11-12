@@ -48,7 +48,7 @@ class SpeechRecognitionService {
       call.requestHeaders.setObject(NSString(string:Bundle.main.bundleIdentifier!),
                                     forKey:NSString(string:"X-Ios-Bundle-Identifier"))
 
-      print("HEADERS:\(call.requestHeaders)")
+      //print("HEADERS:\(call.requestHeaders)")
 
       call.start()
       streaming = true
@@ -58,7 +58,7 @@ class SpeechRecognitionService {
       recognitionConfig.encoding =  .linear16
       recognitionConfig.sampleRateHertz = Int32(sampleRate)
       recognitionConfig.languageCode = "en-US"
-      recognitionConfig.maxAlternatives = 1
+      recognitionConfig.maxAlternatives = 4
       recognitionConfig.enableWordTimeOffsets = true
 
       let streamingRecognitionConfig = StreamingRecognitionConfig()
