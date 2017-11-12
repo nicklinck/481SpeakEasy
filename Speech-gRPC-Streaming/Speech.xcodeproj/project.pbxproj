@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		128A22671FB8EB9700D60294 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128A22661FB8EB9600D60294 /* SwiftyJSON.swift */; };
+		128A22691FB8F16200D60294 /* wordMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128A22681FB8F16200D60294 /* wordMap.swift */; };
 		2C450CC6320CA9890051ABAF /* Pods_Speech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0B7F558BD8BC89862C8C277 /* Pods_Speech.framework */; };
 		964CEAD91FB11AA300A30AD9 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964CEAD81FB11AA300A30AD9 /* SettingTableViewCell.swift */; };
 		964CEADB1FB11AE600A30AD9 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964CEADA1FB11AE600A30AD9 /* Settings.swift */; };
@@ -48,6 +50,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		128A22661FB8EB9600D60294 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = Pods/SwiftyJSON/Source/SwiftyJSON.swift; sourceTree = SOURCE_ROOT; };
+		128A22681FB8F16200D60294 /* wordMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wordMap.swift; sourceTree = "<group>"; };
 		54C3D1E96C8C43AB14662311 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E83ACE29B0D0DF0085BA8F2 /* Pods-Speech.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Speech.release.xcconfig"; path = "Pods/Target Support Files/Pods-Speech/Pods-Speech.release.xcconfig"; sourceTree = "<group>"; };
 		6C682F8DD9C94E41979FE816 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -174,6 +178,7 @@
 		D34C17CB1C948F5700D69BCA /* Speech */ = {
 			isa = PBXGroup;
 			children = (
+				128A22661FB8EB9600D60294 /* SwiftyJSON.swift */,
 				D3E34EA01D77541D00EF755D /* AppDelegate.swift */,
 				D34C17D81C948F5800D69BCA /* Assets.xcassets */,
 				D31E0EB91D77AA2F006A50AB /* AudioController.swift */,

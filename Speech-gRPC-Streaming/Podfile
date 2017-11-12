@@ -8,6 +8,7 @@ pod 'Spring', :git => 'https://github.com/MengTo/Spring.git'
 target 'Speech' do
 
   pod 'googleapis', :path => '.'
+  pod 'SwiftyJSON'
 
 end
 
