@@ -286,6 +286,7 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
     @IBOutlet weak var clearButton: UIButton!
     @IBAction func clearButtonPressed(_ sender: Any) {
         textView.text = ""
+        currentText = ""
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
