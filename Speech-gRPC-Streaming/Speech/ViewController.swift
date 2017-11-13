@@ -167,7 +167,7 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
                     //strongSelf.stopAudio(strongSelf)
                     //print("is finished!")
                     //strongSelf.textView.text.append(alternative.transcript)
-                    currentText = strongSelf.textView.text + " "
+                    currentText = strongSelf.textView.text
                 }
             }
       })
@@ -238,16 +238,26 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
     
 
     
+    @IBOutlet weak var undoButton: UIButton!
     @IBAction func undoButtonPressed(_ sender: Any) {
         print("Undo pressed")
-        
-        let tempText = self.textView.text
-        var json = getAlternatives(url_param: (tempText?.lastWord)!)
-        let endIndex = tempText?.index((tempText?.endIndex)!, offsetBy: -1*((tempText?.lastWord.count)!+1))
-        self.textView.text = tempText?.substring(with: tempText!.startIndex..<endIndex)
         stopAudio(self)
+        
+        if self.textView.text != "" {
+            let tempText = self.textView.text
+            var json = getAlternatives(url_param: (tempText?.lastWord)!)
+            var offset = (tempText?.lastWord.count)!+1
+            if offset > (tempText?.count)!{
+                offset = (tempText?.count)!
+            }
+            if let endIndex = tempText?.index((tempText?.endIndex)!, offsetBy: -1*offset) {
+                self.textView.text = String(tempText![..<endIndex])    // pos is an index, it works
+            }
+            currentText = self.textView.text + " "
+        }
+        
         recordAudio(self)
-        */
+        
         print("undo")
         
     }

@@ -156,7 +156,7 @@
                         <outlet property="startStreaming" destination="aJY-83-MIx" id="dy9-jB-6qH"/>
                         <outlet property="stopStreaming" destination="wgH-jh-Nuq" id="dWi-wf-I3l"/>
                         <outlet property="textView" destination="vtY-SX-V3c" id="aym-NZ-3gu"/>
-                        <outlet property="undoButton" destination="WgA-sz-WhB" id="N33-EH-8Yj"/>
+                        <outlet property="undoButton" destination="WgA-sz-WhB" id="9QI-V1-zOx"/>
                         <outlet property="view" destination="8bC-Xf-vdC" id="I19-bM-Qp4"/>
                     </connections>
                 </viewController>

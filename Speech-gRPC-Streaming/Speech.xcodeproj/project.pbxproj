@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		128A22671FB8EB9700D60294 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128A22661FB8EB9600D60294 /* SwiftyJSON.swift */; };
-		128A22691FB8F16200D60294 /* wordMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128A22681FB8F16200D60294 /* wordMap.swift */; };
 		2C450CC6320CA9890051ABAF /* Pods_Speech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0B7F558BD8BC89862C8C277 /* Pods_Speech.framework */; };
 		964CEAD91FB11AA300A30AD9 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964CEAD81FB11AA300A30AD9 /* SettingTableViewCell.swift */; };
 		964CEADB1FB11AE600A30AD9 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964CEADA1FB11AE600A30AD9 /* Settings.swift */; };
@@ -47,11 +45,70 @@
 		D392D9861C94937D002F5132 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D392D9851C94937D002F5132 /* Main.storyboard */; };
 		D3E34EA11D77541D00EF755D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E34EA01D77541D00EF755D /* AppDelegate.swift */; };
 		D3E34EA51D7757CC00EF755D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E34EA41D7757CC00EF755D /* ViewController.swift */; };
+		F8AE56531FB9F42400D1C487 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8AE56541FB9F42400D1C487 /* SwiftyJSON.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F8C5B9291FB9F50D006AE99F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8C5B91E1FB9F50D006AE99F /* SwiftyJSON.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2E4FEFDB19575BE100351305;
+			remoteInfo = "SwiftyJSON iOS";
+		};
+		F8C5B92B1FB9F50D006AE99F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8C5B91E1FB9F50D006AE99F /* SwiftyJSON.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2E4FEFE619575BE100351305;
+			remoteInfo = "SwiftyJSON iOS Tests";
+		};
+		F8C5B92D1FB9F50D006AE99F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8C5B91E1FB9F50D006AE99F /* SwiftyJSON.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9C7DFC5B1A9102BD005AA3F7;
+			remoteInfo = "SwiftyJSON macOS";
+		};
+		F8C5B92F1FB9F50D006AE99F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8C5B91E1FB9F50D006AE99F /* SwiftyJSON.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9C7DFC651A9102BD005AA3F7;
+			remoteInfo = "SwiftyJSON macOS Tests";
+		};
+		F8C5B9311FB9F50D006AE99F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8C5B91E1FB9F50D006AE99F /* SwiftyJSON.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E4D7CCE81B9465A700EE7221;
+			remoteInfo = "SwiftyJSON watchOS";
+		};
+		F8C5B9331FB9F50D006AE99F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8C5B91E1FB9F50D006AE99F /* SwiftyJSON.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7236B4F61BAC14150020529B;
+			remoteInfo = "SwiftyJSON tvOS";
+		};
+		F8C5B9351FB9F50D006AE99F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8C5B91E1FB9F50D006AE99F /* SwiftyJSON.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A8580F741BCF5C5B00DA927B;
+			remoteInfo = "SwiftyJSON tvOS Tests";
+		};
+		F8C5B9371FB9F51A006AE99F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8C5B91E1FB9F50D006AE99F /* SwiftyJSON.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2E4FEFDA19575BE100351305;
+			remoteInfo = "SwiftyJSON iOS";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		128A22661FB8EB9600D60294 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = Pods/SwiftyJSON/Source/SwiftyJSON.swift; sourceTree = SOURCE_ROOT; };
-		128A22681FB8F16200D60294 /* wordMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wordMap.swift; sourceTree = "<group>"; };
 		54C3D1E96C8C43AB14662311 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E83ACE29B0D0DF0085BA8F2 /* Pods-Speech.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Speech.release.xcconfig"; path = "Pods/Target Support Files/Pods-Speech/Pods-Speech.release.xcconfig"; sourceTree = "<group>"; };
 		6C682F8DD9C94E41979FE816 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -99,6 +156,8 @@
 		D3E34EA01D77541D00EF755D /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D3E34EA41D7757CC00EF755D /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		F3215BCD5D87DFF7F2965B8A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		F8AE56541FB9F42400D1C487 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8C5B91E1FB9F50D006AE99F /* SwiftyJSON.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftyJSON.xcodeproj; path = Speech/SwiftyJSON/SwiftyJSON.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +165,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8AE56531FB9F42400D1C487 /* SwiftyJSON.framework in Frameworks */,
 				2C450CC6320CA9890051ABAF /* Pods_Speech.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -116,6 +176,7 @@
 		32C6BA1B2FA20A9904F13B95 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F8AE56541FB9F42400D1C487 /* SwiftyJSON.framework */,
 				54C3D1E96C8C43AB14662311 /* libPods.a */,
 				C0B7F558BD8BC89862C8C277 /* Pods_Speech.framework */,
 			);
@@ -160,6 +221,7 @@
 		D34C17C01C948F5700D69BCA = {
 			isa = PBXGroup;
 			children = (
+				F8C5B91E1FB9F50D006AE99F /* SwiftyJSON.xcodeproj */,
 				D34C17CB1C948F5700D69BCA /* Speech */,
 				D34C17CA1C948F5700D69BCA /* Products */,
 				F657FA334EB8D9ABF1ACF569 /* Pods */,
@@ -215,6 +277,20 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		F8C5B91F1FB9F50D006AE99F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F8C5B92A1FB9F50D006AE99F /* SwiftyJSON.framework */,
+				F8C5B92C1FB9F50D006AE99F /* SwiftyJSON iOS Tests.xctest */,
+				F8C5B92E1FB9F50D006AE99F /* SwiftyJSON.framework */,
+				F8C5B9301FB9F50D006AE99F /* SwiftyJSON macOS Tests.xctest */,
+				F8C5B9321FB9F50D006AE99F /* SwiftyJSON.framework */,
+				F8C5B9341FB9F50D006AE99F /* SwiftyJSON.framework */,
+				F8C5B9361FB9F50D006AE99F /* SwiftyJSON tvOS Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -232,6 +308,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				F8C5B9381FB9F51A006AE99F /* PBXTargetDependency */,
 			);
 			name = Speech;
 			productName = Speech;
@@ -264,12 +341,70 @@
 			mainGroup = D34C17C01C948F5700D69BCA;
 			productRefGroup = D34C17CA1C948F5700D69BCA /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = F8C5B91F1FB9F50D006AE99F /* Products */;
+					ProjectRef = F8C5B91E1FB9F50D006AE99F /* SwiftyJSON.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				D34C17C81C948F5700D69BCA /* Speech */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		F8C5B92A1FB9F50D006AE99F /* SwiftyJSON.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftyJSON.framework;
+			remoteRef = F8C5B9291FB9F50D006AE99F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F8C5B92C1FB9F50D006AE99F /* SwiftyJSON iOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SwiftyJSON iOS Tests.xctest";
+			remoteRef = F8C5B92B1FB9F50D006AE99F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F8C5B92E1FB9F50D006AE99F /* SwiftyJSON.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftyJSON.framework;
+			remoteRef = F8C5B92D1FB9F50D006AE99F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F8C5B9301FB9F50D006AE99F /* SwiftyJSON macOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SwiftyJSON macOS Tests.xctest";
+			remoteRef = F8C5B92F1FB9F50D006AE99F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F8C5B9321FB9F50D006AE99F /* SwiftyJSON.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftyJSON.framework;
+			remoteRef = F8C5B9311FB9F50D006AE99F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F8C5B9341FB9F50D006AE99F /* SwiftyJSON.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftyJSON.framework;
+			remoteRef = F8C5B9331FB9F50D006AE99F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F8C5B9361FB9F50D006AE99F /* SwiftyJSON tvOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SwiftyJSON tvOS Tests.xctest";
+			remoteRef = F8C5B9351FB9F50D006AE99F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		D34C17C71C948F5700D69BCA /* Resources */ = {
@@ -393,6 +528,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F8C5B9381FB9F51A006AE99F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SwiftyJSON iOS";
+			targetProxy = F8C5B9371FB9F51A006AE99F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		D34C17DA1C948F5800D69BCA /* LaunchScreen.storyboard */ = {
