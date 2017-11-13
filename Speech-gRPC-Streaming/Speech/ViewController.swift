@@ -241,7 +241,11 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
     @IBOutlet weak var undoButton: UIButton!
     @IBAction func undoButtonPressed(_ sender: Any) {
         print("Undo pressed")
-        stopAudio(self)
+        var recordAgain = false
+        if self.startStreaming.isHidden == true {
+            stopAudio(self)
+            recordAgain = true
+        }
         
         if self.textView.text != "" {
             let tempText = self.textView.text
@@ -256,7 +260,9 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
             currentText = self.textView.text + " "
         }
         
-        recordAudio(self)
+        if recordAgain {
+            recordAudio(self)
+        }
         
         print("undo")
         
