@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "24E2DEAC4B9EDCD30D217B5B553D33F9"
-               BuildableName = "openssl.framework"
+               BuildableName = "BoringSSL"
                BlueprintName = "BoringSSL"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
@@ -48,7 +48,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "24E2DEAC4B9EDCD30D217B5B553D33F9"
-            BuildableName = "openssl.framework"
+            BuildableName = "BoringSSL"
             BlueprintName = "BoringSSL"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>

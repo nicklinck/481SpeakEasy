@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "800C64C8194E6B52146B0E3436CEB009"
-               BuildableName = "grpc.framework"
+               BuildableName = "gRPC-Core"
                BlueprintName = "gRPC-Core"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
@@ -48,7 +48,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "800C64C8194E6B52146B0E3436CEB009"
-            BuildableName = "grpc.framework"
+            BuildableName = "gRPC-Core"
             BlueprintName = "gRPC-Core"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>

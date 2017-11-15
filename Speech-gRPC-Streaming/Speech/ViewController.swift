@@ -16,21 +16,19 @@
 import UIKit
 import AVFoundation
 import googleapis
-import Foundation
-import SwiftyJSON
 
 let SAMPLE_RATE = 16000
-let userDefaults =  UserDefaults.standard
-
 var currentText = ""
-var altArray: [String] = []
 //var previousStringsStack = []
 
+let colorArray = [UIColor.black, UIColor.gray, UIColor.blue, UIColor.red]
+
 let buttonColor = UIColor(red: 61/255.0, green: 136/255.0, blue: 209/255.0, alpha: 1.0)
-let beccaColor = UIColor(red: 92/255.0, green: 28/255.0, blue: 109/255.0, alpha: 1.0)
-let chrisColor = UIColor(red: 109/255.0, green: 169/255.0, blue: 225/255.0, alpha: 1.0)
 let javierColor = UIColor(red: 17/255.0, green: 106/255.0, blue: 163/255.0, alpha: 1.0)
-let nickColor = UIColor(red: 255/255.0, green: 159/255.0, blue: 21/255.0, alpha: 1.0)
+let defaultColor = UIColor(red: 20/255.0, green: 50/255.0, blue: 64/255.0, alpha: 1.0)
+
+
+let backgroundColorArray = [UIColor.black, UIColor.darkGray, UIColor.lightGray, defaultColor, UIColor(red: 25/255.0, green: 25/255.0, blue: 112/255.0, alpha: 1.0), javierColor, UIColor(red: 0/255.0, green: 50/255.0, blue: 0/255.0, alpha: 1.0), UIColor(red: 227/255.0, green: 207/255.0, blue: 13/255.0, alpha: 1.0), UIColor(red: 223/255.0, green: 124/255.0, blue: 2/255.0, alpha: 1.0), UIColor(red: 131/255.0, green: 4/255.0, blue: 4/255.0, alpha: 1.0), UIColor(red: 69/255.0, green: 3/255.0, blue: 116/255.0, alpha: 1.0)]
 
 
 extension String {
@@ -38,8 +36,7 @@ extension String {
         var byWords:[String] = []
         enumerateSubstrings(in: startIndex..<endIndex, options: .byWords) {
             guard let word = $0 else { return }
-            let word1 = $1, word2 = $2, word3 = $3
-            //print($1,$2,$3)
+            print($1,$2,$3)
             byWords.append(word)
         }
         return byWords
@@ -63,17 +60,14 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
 @IBOutlet weak var textView: UITextView!
   var audioData: NSMutableData!
     var timer = Timer()
-
-    let backColor = UIColor(red: 20/255.0, green: 50/255.0, blue: 64/255.0, alpha: 1.0)
     
   override func viewDidLoad() {
-    
     super.viewDidLoad()
     self.stopStreaming.isHidden = true
     AudioController.sharedInstance.delegate = self
-    view.backgroundColor = backColor
+    textView.font = UIFont(name: "Helvetica Neue", size: 18)
   }
-
+    
   @objc func invalidateTimer(){
     timer.invalidate()
     _ = AudioController.sharedInstance.stop()
@@ -130,8 +124,6 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
             } else if let response = response {
                 var finished = false
                 //print("response: ", response["results"])
-                //print("Results")
-                //print(response.resultsArray)
                 for result in response.resultsArray! {
                    // print("result: ", result)
                     
@@ -139,23 +131,20 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
                         if result.isFinal {
                             finished = true
                         }
-                        
-                        //print("Alternative")
-                        //print(result.alternativesArray)
-                        var alternative = result.alternativesArray[0]
+                        //for alternative in result.alternativesArray{
+                            var alternative = result.alternativesArray[0]
                             if let alternative = alternative as? SpeechRecognitionAlternative{
-
                                 //print("alternative transcript: ", alternative.transcript)
                                 if result.stability > 0.8 {
                                     strongSelf.textView.text = currentText + alternative.transcript
                                     //previousStringsStack.append(strongSelf.textView.text.lastWord)
                                 }
                                 if finished{
-                                    // print("got here")
+                                    print("got here")
                                     //strongSelf.textView.text = currentText + alternative.transcript
                                 }
                             }
-                        
+                            
                         //}
                     }
                     
@@ -165,54 +154,15 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
                 
                 if finished {
                     //strongSelf.stopAudio(strongSelf)
-                    //print("is finished!")
+                    print("is finished!")
                     //strongSelf.textView.text.append(alternative.transcript)
-                    currentText = strongSelf.textView.text
+                    currentText = strongSelf.textView.text + " "
                 }
             }
       })
       self.audioData = NSMutableData()
     }
   }
-    // returns json string
-    func getAlternatives(url_param: String) -> [String: AnyObject] {
-        var data: [String: AnyObject] = [:]
-        let url = URL(string: "https://api.datamuse.com/words?sl=" + url_param)
-        URLSession.shared.dataTask(with: url!, completionHandler: {
-            (data, response, error) in
-            if(error != nil){
-                print("error")
-            }else{
-                do{
-                    let json = try JSON(data: data!)
-                    print(json[1]["word"])
-                    print(json[2]["word"])
-                    print(json[3]["word"])
-                }catch let error as NSError{
-                    print(error)
-                }
-            }
-        }).resume()
-        return data
-    }
-        
-//        let full_url = URL(string: "https://api.datamuse.com/words?sl=" + url)
-//
-//        let task = URLSession.shared.dataTask(with: full_url!) { data, response, error in
-//            guard error == nil else {
-//                print(error!)
-//                return
-//            }
-//            guard let data = data else {
-//                print("Data is empty")
-//                return
-//            }
-//
-//            json = (try! JSONSerialization.jsonObject(with: data, options: []) as? String)!
-//
-//            print("JSON String", json)
-//
-//
     @IBAction func exportButtonPressed(_ sender: Any) {
         let activityViewController = UIActivityViewController(activityItems: [textView.text], applicationActivities: nil)
         if let popoverPresentationController = activityViewController.popoverPresentationController {
@@ -221,49 +171,14 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
         present(activityViewController, animated: true, completion: nil)
     }
     
-    func getThreeWords(text: String, endIndex: String.Index){
-        // get last word
-        let lastWord = text.substring(from: endIndex)
-        // see if last word is in undo map
-        let listObj = userDefaults.object(forKey: lastWord)
-        if let list = listObj as? Dictionary<String, Int>{
-            print(list)
-        }
-        else {
-            for str in altArray {
-                // set the val for key to be first three words in the altArray
-            }
-        }
-    }
-    
-
-    
     @IBOutlet weak var undoButton: UIButton!
     @IBAction func undoButtonPressed(_ sender: Any) {
-        print("Undo pressed")
-        var recordAgain = false
-        if self.startStreaming.isHidden == true {
-            stopAudio(self)
-            recordAgain = true
-        }
-        
-        if self.textView.text != "" {
-            let tempText = self.textView.text
-            var json = getAlternatives(url_param: (tempText?.lastWord)!)
-            var offset = (tempText?.lastWord.count)!+1
-            if offset > (tempText?.count)!{
-                offset = (tempText?.count)!
-            }
-            if let endIndex = tempText?.index((tempText?.endIndex)!, offsetBy: -1*offset) {
-                self.textView.text = String(tempText![..<endIndex])    // pos is an index, it works
-            }
-            currentText = self.textView.text + " "
-        }
-        
-        if recordAgain {
-            recordAudio(self)
-        }
-        
+        /*let tempText = self.textView.text
+        let endIndex = tempText?.index((tempText?.endIndex)!, offsetBy: -1*((tempText?.lastWord.count)!+1))
+        self.textView.text = tempText?.substring(with: tempText!.startIndex..<endIndex)
+        stopAudio(self)
+        recordAudio(self)
+        */
         print("undo")
         
     }
@@ -286,7 +201,6 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
     @IBOutlet weak var clearButton: UIButton!
     @IBAction func clearButtonPressed(_ sender: Any) {
         textView.text = ""
-        currentText = ""
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -319,27 +233,6 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
             self.startStreaming.setTitleColor(buttonColor, for: .normal)
             self.stopStreaming.setTitleColor(buttonColor, for: .normal)
         }
-        else if (view.backgroundColor == beccaColor) {
-            self.copyButton.setTitleColor(UIColor(red: 131/255.0, green: 182/255.0, blue: 126/255.0, alpha: 1.0), for: .normal)
-            self.clearButton.setTitleColor(UIColor(red: 131/255.0, green: 182/255.0, blue: 126/255.0, alpha: 1.0), for: .normal)
-            self.undoButton.setTitleColor(UIColor(red: 131/255.0, green: 182/255.0, blue: 126/255.0, alpha: 1.0), for: .normal)
-            self.startStreaming.setTitleColor(UIColor(red: 131/255.0, green: 182/255.0, blue: 126/255.0, alpha: 1.0), for: .normal)
-            self.stopStreaming.setTitleColor(UIColor(red: 131/255.0, green: 182/255.0, blue: 126/255.0, alpha: 1.0), for: .normal)
-        }
-        else if (view.backgroundColor == chrisColor || view.backgroundColor == nickColor) {
-            self.copyButton.setTitleColor(UIColor(red: 51/255.0, green: 51/255.0, blue: 73/255.0, alpha: 1.0), for: .normal)
-            self.clearButton.setTitleColor(UIColor(red: 51/255.0, green: 51/255.0, blue: 73/255.0, alpha: 1.0), for: .normal)
-            self.undoButton.setTitleColor(UIColor(red: 51/255.0, green: 51/255.0, blue: 73/255.0, alpha: 1.0), for: .normal)
-            self.startStreaming.setTitleColor(UIColor(red: 51/255.0, green: 51/255.0, blue: 73/255.0, alpha: 1.0), for: .normal)
-            self.stopStreaming.setTitleColor(UIColor(red: 51/255.0, green: 51/255.0, blue: 73/255.0, alpha: 1.0), for: .normal)
-        }
-        else if (view.backgroundColor == javierColor) {
-            self.copyButton.setTitleColor(UIColor(red: 249/255.0, green: 85/255.0, blue: 30/255.0, alpha: 1.0), for: .normal)
-            self.clearButton.setTitleColor(UIColor(red: 249/255.0, green: 85/255.0, blue: 30/255.0, alpha: 1.0), for: .normal)
-            self.undoButton.setTitleColor(UIColor(red: 249/255.0, green: 85/255.0, blue: 30/255.0, alpha: 1.0), for: .normal)
-            self.startStreaming.setTitleColor(UIColor(red: 249/255.0, green: 85/255.0, blue: 30/255.0, alpha: 1.0), for: .normal)
-            self.stopStreaming.setTitleColor(UIColor(red: 249/255.0, green: 85/255.0, blue: 30/255.0, alpha: 1.0), for: .normal)
-        }
         else {
             self.copyButton.setTitleColor(.white, for: .normal)
             self.clearButton.setTitleColor(.white, for: .normal)
@@ -362,5 +255,16 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
     }
     
     
+    
+    override func viewDidAppear(_ animated: Bool) {
+        print(UserDefaults.standard.integer(forKey: "fontColor"))
+        if let fontColor = UserDefaults.standard.value(forKey: "fontColor") as? Int {
+            self.textView.textColor = colorArray[fontColor]
+        }
+        print(UserDefaults.standard.integer(forKey: "backgroundColor"))
+        if let backgroundColor = UserDefaults.standard.value(forKey: "backgroundColor") as? Int {
+            self.view.backgroundColor = backgroundColorArray[backgroundColor]
+        }
+    }
     
 }

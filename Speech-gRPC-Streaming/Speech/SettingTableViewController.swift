@@ -9,9 +9,9 @@
 import UIKit
 
 var current_font = "Helvetica Neue"
-var current_font_size = 14
+var current_font_size = 18
 var current_font_color_int = 0
-var current_font_size_int = 0
+var current_font_size_int = 1
 var current_font_int = 7
 var current_background_color_int = 3
 
@@ -45,15 +45,12 @@ class SettingTableViewController: UITableViewController {
     @IBOutlet weak var lightGreyBackgroundButton: SpringButton!
     @IBOutlet weak var defaultBackgroundButton: SpringButton!
     @IBOutlet weak var blueBackgroundButton: SpringButton!
+    @IBOutlet weak var javierBackgroundButton: SpringButton!
     @IBOutlet weak var greenBackgroundButton: SpringButton!
     @IBOutlet weak var yellowBackgroundButton: SpringButton!
     @IBOutlet weak var orangeBackgroundButton: SpringButton!
     @IBOutlet weak var redBackgroundButton: SpringButton!
     @IBOutlet weak var purpleBackgroundButton: SpringButton!
-    @IBOutlet weak var beccasBackgroundButton: SpringButton!
-    @IBOutlet weak var chrisBackgroundButton: SpringButton!
-    @IBOutlet weak var javierBackgroundButton: SpringButton!
-    @IBOutlet weak var nickBackgroundButton: SpringButton!
     var backgroundButtons: [SpringButton] = [SpringButton]()
     
     @IBOutlet weak var blackFontColorButton: SpringButton!
@@ -113,7 +110,7 @@ class SettingTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadSettings()
-        self.backgroundButtons = [self.blackBackgroundButton, self.darkGreyBackgroundButton, self.lightGreyBackgroundButton, self.defaultBackgroundButton, self.blueBackgroundButton, self.greenBackgroundButton, self.yellowBackgroundButton, self.orangeBackgroundButton, self.redBackgroundButton, self.purpleBackgroundButton, self.beccasBackgroundButton, self.chrisBackgroundButton, self.javierBackgroundButton, self.nickBackgroundButton]
+        self.backgroundButtons = [self.blackBackgroundButton, self.darkGreyBackgroundButton, self.lightGreyBackgroundButton, self.defaultBackgroundButton, self.blueBackgroundButton, self.javierBackgroundButton, self.greenBackgroundButton, self.yellowBackgroundButton, self.orangeBackgroundButton, self.redBackgroundButton, self.purpleBackgroundButton]
         self.fontColorButtons = [self.blackFontColorButton, self.greyFontColorButton, self.blueFontColorButton, self.redFontColorButton]
         self.fontSizeButtons = [self.font14Button, self.font18Button, self.font22Button, self.font26Button, self.font30Button]
         self.fontButtons = [self.atFontButton, self.arialFontButton, self.copperplateFontButton, self.courierFontButton, self.didotFontButton, self.georgiaFontButton, self.gsFontButton, self.hnFontButton, self.optimaFontButton, self.tnrFontButton, self.verdanaFontButton]
@@ -133,6 +130,7 @@ class SettingTableViewController: UITableViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -146,6 +144,7 @@ class SettingTableViewController: UITableViewController {
         blackBackgroundButton.animation = "pop"
         selected(currentButton: 0, buttonType: backgroundButtons)
         blackBackgroundButton.animate()
+        UserDefaults.standard.set(0, forKey: "backgroundColor")
     }
     
     @IBAction func darkGreyBackground(_ sender: Any) {
@@ -153,78 +152,70 @@ class SettingTableViewController: UITableViewController {
         darkGreyBackgroundButton.animation = "pop"
         selected(currentButton: 1, buttonType: backgroundButtons)
         darkGreyBackgroundButton.animate()
+        UserDefaults.standard.set(1, forKey: "backgroundColor")
     }
     @IBAction func lightGreyBackground(_ sender: Any) {
         delegate?.changeBackgroundColor(UIColor.lightGray)
         lightGreyBackgroundButton.animation = "pop"
         selected(currentButton: 2, buttonType: backgroundButtons)
         lightGreyBackgroundButton.animate()
+        UserDefaults.standard.set(2, forKey: "backgroundColor")
     }
     @IBAction func changeDefaultBackground(_ sender: Any) {
         delegate?.changeBackgroundColor(UIColor(red: 20/255.0, green: 50/255.0, blue: 64/255.0, alpha: 1.0))
         defaultBackgroundButton.animation = "pop"
         selected(currentButton: 3, buttonType: backgroundButtons)
         defaultBackgroundButton.animate()
+        UserDefaults.standard.set(3, forKey: "backgroundColor")
     }
     @IBAction func blueBackground(_ sender: Any) {
-        delegate?.changeBackgroundColor(UIColor(red: 25/255.0, green: 25/255.0, blue: 112/255.0, alpha: 1.0))
+        delegate?.changeBackgroundColor(UIColor(red: 109/255.0, green: 169/255.0, blue: 225/255.0, alpha: 1.0))
         blueBackgroundButton.animation = "pop"
         selected(currentButton: 4, buttonType: backgroundButtons)
         blueBackgroundButton.animate()
+        UserDefaults.standard.set(4, forKey: "backgroundColor")
     }
     @IBAction func greenBackground(_ sender: Any) {
         delegate?.changeBackgroundColor(UIColor(red: 0/255.0, green: 50/255.0, blue: 0/255.0, alpha: 1.0))
         greenBackgroundButton.animation = "pop"
-        selected(currentButton: 5, buttonType: backgroundButtons)
+        selected(currentButton: 6, buttonType: backgroundButtons)
         greenBackgroundButton.animate()
+        UserDefaults.standard.set(6, forKey: "backgroundColor")
     }
     @IBAction func yellowBackground(_ sender: Any) {
         delegate?.changeBackgroundColor(UIColor(red: 227/255.0, green: 207/255.0, blue: 13/255.0, alpha: 1.0))
         yellowBackgroundButton.animation = "pop"
-        selected(currentButton: 6, buttonType: backgroundButtons)
+        selected(currentButton: 7, buttonType: backgroundButtons)
         yellowBackgroundButton.animate()
+        UserDefaults.standard.set(7, forKey: "backgroundColor")
     }
     @IBAction func orangeBackground(_ sender: Any) {
-        delegate?.changeBackgroundColor(UIColor(red: 223/255.0, green: 124/255.0, blue: 2/255.0, alpha: 1.0))
+        delegate?.changeBackgroundColor(UIColor(red: 17/255.0, green: 106/255.0, blue: 163/255.0, alpha: 1.0))
         orangeBackgroundButton.animation = "pop"
-        selected(currentButton: 7, buttonType: backgroundButtons)
+        selected(currentButton: 8, buttonType: backgroundButtons)
         orangeBackgroundButton.animate()
+        UserDefaults.standard.set(8, forKey: "backgroundColor")
     }
     @IBAction func redBackground(_ sender: Any) {
         delegate?.changeBackgroundColor(UIColor(red: 131/255.0, green: 4/255.0, blue: 4/255.0, alpha: 1.0))
         redBackgroundButton.animation = "pop"
-        selected(currentButton: 8, buttonType: backgroundButtons)
+        selected(currentButton: 9, buttonType: backgroundButtons)
         redBackgroundButton.animate()
+        UserDefaults.standard.set(9, forKey: "backgroundColor")
     }
     @IBAction func purpleBackground(_ sender: Any) {
         delegate?.changeBackgroundColor(UIColor(red: 69/255.0, green: 3/255.0, blue: 116/255.0, alpha: 1.0))
         purpleBackgroundButton.animation = "pop"
-        selected(currentButton: 9, buttonType: backgroundButtons)
-        purpleBackgroundButton.animate()
-    }
-    @IBAction func beccasFavorite(_ sender: Any) {
-        delegate?.changeBackgroundColor(UIColor(red: 92/255.0, green: 28/255.0, blue: 109/255.0, alpha: 1.0))
-        beccasBackgroundButton.animation = "pop"
         selected(currentButton: 10, buttonType: backgroundButtons)
-        beccasBackgroundButton.animate()
-    }
-    @IBAction func chrisFavorite(_ sender: Any) {
-        delegate?.changeBackgroundColor(UIColor(red: 109/255.0, green: 169/255.0, blue: 225/255.0, alpha: 1.0))
-        chrisBackgroundButton.animation = "pop"
-        selected(currentButton: 11, buttonType: backgroundButtons)
-        chrisBackgroundButton.animate()
+        purpleBackgroundButton.animate()
+        UserDefaults.standard.set(10, forKey: "backgroundColor")
     }
     @IBAction func javiersPick(_ sender: Any) {
         delegate?.changeBackgroundColor(UIColor(red: 17/255.0, green: 106/255.0, blue: 163/255.0, alpha: 1.0))
         javierBackgroundButton.animation = "pop"
-        selected(currentButton: 12, buttonType: backgroundButtons)
+        selected(currentButton: 5, buttonType: backgroundButtons)
         javierBackgroundButton.animate()
-    }
-    @IBAction func NicksPick(_ sender: Any) {
-        delegate?.changeBackgroundColor(UIColor(red: 255/255.0, green: 159/255.0, blue: 21/255.0, alpha: 1.0))
-        nickBackgroundButton.animation = "pop"
-        selected(currentButton: 13, buttonType: backgroundButtons)
-        nickBackgroundButton.animate()
+        UserDefaults.standard.set(5, forKey: "backgroundColor")
     }
     
     //Font Colors
@@ -233,24 +224,28 @@ class SettingTableViewController: UITableViewController {
         blackFontColorButton.animation = "pop"
         selected(currentButton: 0, buttonType: fontColorButtons)
         blackFontColorButton.animate()
+        UserDefaults.standard.set(0, forKey: "fontColor")
     }
     @IBAction func changeFontColorGrey(_ sender: Any) {
         delegate2?.changeFontColor(UIColor.gray)
         greyFontColorButton.animation = "pop"
         selected(currentButton: 1, buttonType: fontColorButtons)
         greyFontColorButton.animate()
+        UserDefaults.standard.set(1, forKey: "fontColor")
     }
     @IBAction func changeFontColorRed(_ sender: Any) {
         delegate2?.changeFontColor(UIColor.red)
         redFontColorButton.animation = "pop"
         selected(currentButton: 3, buttonType: fontColorButtons)
         redFontColorButton.animate()
+        UserDefaults.standard.set(3, forKey: "fontColor")
     }
     @IBAction func changeFontColorBlue(_ sender: Any) {
         delegate2?.changeFontColor(UIColor.blue)
         blueFontColorButton.animation = "pop"
         selected(currentButton: 2, buttonType: fontColorButtons)
         blueFontColorButton.animate()
+        UserDefaults.standard.set(2, forKey: "fontColor")
     }
     
     //Font Size
