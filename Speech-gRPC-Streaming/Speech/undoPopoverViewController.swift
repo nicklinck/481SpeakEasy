@@ -16,9 +16,11 @@ class undoPopoverViewController: UIViewController, UITableViewDelegate, UITableV
     
     weak var selectedWordDelegate: ClassGetSelectedWordDelegate?
 
+    @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.tableView.tableFooterView = UIView(frame: CGRect.zero)
         // Do any additional setup after loading the view.
     }
 
@@ -67,7 +69,9 @@ class undoPopoverViewController: UIViewController, UITableViewDelegate, UITableV
     internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         print("setting up table view")
         let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "predictedWordCell")
-        cell.textLabel?.text = cell_array[indexPath.row]
+        if indexPath.row != 3{
+            cell.textLabel?.text = cell_array[indexPath.row]
+        }
         return cell
     }
     
