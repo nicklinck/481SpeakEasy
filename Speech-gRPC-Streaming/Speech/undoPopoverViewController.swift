@@ -30,26 +30,13 @@ class undoPopoverViewController: UIViewController, UITableViewDelegate, UITableV
         // Dispose of any resources that can be recreated.
     }
     
-    var selectedWord = ""
-    @IBAction func replaceButtonPressed(_ sender: Any) {
+    
+    /*@IBAction func replaceButtonPressed(_ sender: Any) {
         //this should tell the popover to tell the main view controller to dismiss it.
         print("popover closed2: ", selectedWord)
         selectedWordDelegate?.getSelectedWord(selectedWord)
         self.dismiss(animated: false, completion: nil)
         selectedWord = ""
-    }
-    
-    /*override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("preparing for segue")
-        //MARK: step 5 create a reference of Class B and bind them through the prepareforsegue method
-        if var popoverClass = segue.destination as? ViewController {
-            popoverClass.getPredictedWordsDelegate = self
-        }
-        
-    }*/
-    
-    /*private func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: undoPopoverViewController) {
-        
     }*/
 
     
@@ -82,7 +69,9 @@ class undoPopoverViewController: UIViewController, UITableViewDelegate, UITableV
         let currentCell = tableView.cellForRow(at: indexPath!) as! UITableViewCell
         
         print(currentCell.textLabel!.text)
-        selectedWord = currentCell.textLabel!.text!
+        var selectedWord = currentCell.textLabel!.text!
+        selectedWordDelegate?.getSelectedWord(selectedWord)
+        self.dismiss(animated: false, completion: nil)
     }
     
     
