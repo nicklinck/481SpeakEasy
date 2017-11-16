@@ -45,6 +45,7 @@
 		D392D9861C94937D002F5132 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D392D9851C94937D002F5132 /* Main.storyboard */; };
 		D3E34EA11D77541D00EF755D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E34EA01D77541D00EF755D /* AppDelegate.swift */; };
 		D3E34EA51D7757CC00EF755D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E34EA41D7757CC00EF755D /* ViewController.swift */; };
+		F84EE5051FBC9C29002E8AE8 /* undoPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84EE5041FBC9C29002E8AE8 /* undoPopoverViewController.swift */; };
 		F8AE56531FB9F42400D1C487 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8AE56541FB9F42400D1C487 /* SwiftyJSON.framework */; };
 /* End PBXBuildFile section */
 
@@ -156,6 +157,7 @@
 		D3E34EA01D77541D00EF755D /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D3E34EA41D7757CC00EF755D /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		F3215BCD5D87DFF7F2965B8A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		F84EE5041FBC9C29002E8AE8 /* undoPopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = undoPopoverViewController.swift; sourceTree = "<group>"; };
 		F8AE56541FB9F42400D1C487 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8C5B91E1FB9F50D006AE99F /* SwiftyJSON.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftyJSON.xcodeproj; path = Speech/SwiftyJSON/SwiftyJSON.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -248,6 +250,7 @@
 				D34C17DD1C948F5800D69BCA /* Info.plist */,
 				D34C17DA1C948F5800D69BCA /* LaunchScreen.storyboard */,
 				D392D9851C94937D002F5132 /* Main.storyboard */,
+				F84EE5041FBC9C29002E8AE8 /* undoPopoverViewController.swift */,
 				D3E34E9F1D77541C00EF755D /* Speech-Bridging-Header.h */,
 				D31E0EB71D778A56006A50AB /* SpeechRecognitionService.swift */,
 				D34C17CC1C948F5700D69BCA /* Supporting Files */,
@@ -491,6 +494,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				964CEADD1FB11B4500A30AD9 /* SettingTableViewController.swift in Sources */,
+				F84EE5051FBC9C29002E8AE8 /* undoPopoverViewController.swift in Sources */,
 				96D97ADD1FB6B4A10034EA38 /* SpringImageView.swift in Sources */,
 				D31E0EBA1D77AA2F006A50AB /* AudioController.swift in Sources */,
 				964CEADB1FB11AE600A30AD9 /* Settings.swift in Sources */,

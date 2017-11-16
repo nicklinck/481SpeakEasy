@@ -50,6 +50,61 @@
         </array>
     </customFonts>
     <scenes>
+        <!--Undo Popover View Controller-->
+        <scene sceneID="Kwq-Oc-9Bq">
+            <objects>
+                <viewController id="qJc-xt-uHg" customClass="undoPopoverViewController" customModule="Speech" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="KKf-vF-3B3"/>
+                        <viewControllerLayoutGuide type="bottom" id="1FE-B8-Sc3"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="NkE-LE-U77">
+                        <rect key="frame" x="0.0" y="0.0" width="250" height="200"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="iki-dA-nNs">
+                                <rect key="frame" x="0.0" y="0.0" width="250" height="144"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="predictedWordCell" rowHeight="30" id="nhP-az-CVn">
+                                        <rect key="frame" x="0.0" y="28" width="250" height="30"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nhP-az-CVn" id="cc3-Ja-P1x">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="29.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="qJc-xt-uHg" id="aHH-W2-yCg"/>
+                                    <outlet property="delegate" destination="qJc-xt-uHg" id="1nP-Gt-6vl"/>
+                                </connections>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YsB-zC-mrr">
+                                <rect key="frame" x="81" y="162" width="88" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Replace"/>
+                                <connections>
+                                    <action selector="replaceButtonPressed:" destination="qJc-xt-uHg" eventType="touchUpInside" id="w3Y-Pn-hK2"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.94114330749999997" green="0.95105007919999995" blue="0.95105007919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="1FE-B8-Sc3" firstAttribute="top" secondItem="iki-dA-nNs" secondAttribute="bottom" id="Aff-YL-lOY"/>
+                            <constraint firstAttribute="trailing" secondItem="iki-dA-nNs" secondAttribute="trailing" id="HMf-Fl-mUf"/>
+                            <constraint firstItem="iki-dA-nNs" firstAttribute="top" secondItem="KKf-vF-3B3" secondAttribute="bottom" id="TBV-Sw-YOG"/>
+                            <constraint firstItem="iki-dA-nNs" firstAttribute="leading" secondItem="NkE-LE-U77" secondAttribute="leading" id="afw-pT-47M"/>
+                        </constraints>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="250" height="150"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="250" height="200"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ymv-pT-GqS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-958.39999999999998" y="-407.49625187406298"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -81,21 +136,15 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WgA-sz-WhB">
-                                <rect key="frame" x="270" y="545" width="92" height="30"/>
+                                <rect key="frame" x="24" y="545" width="92" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                 <state key="normal" title="Undo"/>
                                 <connections>
                                     <action selector="undoButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="VDQ-Uf-Eqe"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dIT-jX-Cfi">
-                                <rect key="frame" x="24" y="545" width="92" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                <state key="normal" title="Copy"/>
-                                <connections>
-                                    <action selector="copyButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2BR-eB-jIg"/>
+                                    <segue destination="qJc-xt-uHg" kind="popoverPresentation" identifier="showUndoPopover" popoverAnchorView="WgA-sz-WhB" id="Ebl-2H-FxE">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                    </segue>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yid-RJ-3oP">
@@ -140,6 +189,15 @@
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dIT-jX-Cfi">
+                                <rect key="frame" x="267" y="545" width="92" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <state key="normal" title="Copy"/>
+                                <connections>
+                                    <action selector="copyButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2BR-eB-jIg"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>

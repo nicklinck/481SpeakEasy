@@ -58,9 +58,16 @@ extension String {
     }
 }
 
-class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroundDelegate, ClassFontColorDelegate, ClassFontSizeDelegate, ClassFontDelegate {
+// using for getting predicted words for undo popover
+protocol ClassGetPredictedWordsDelegate: class {
+    func getPredictedWords(_ words: Array<String>?) -> Array<String>
+}
+
+class ViewController : UIViewController, UIPopoverPresentationControllerDelegate, AudioControllerDelegate, ClassBackgroundDelegate, ClassFontColorDelegate, ClassFontSizeDelegate, ClassFontDelegate, ClassGetSelectedWordDelegate {
   
-@IBOutlet weak var textView: UITextView!
+  weak var getPredictedWordsDelegate: ClassGetPredictedWordsDelegate?
+    
+  @IBOutlet weak var textView: UITextView!
   var audioData: NSMutableData!
     var timer = Timer()
 
@@ -125,6 +132,13 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
                 return
             }
             
+            //print("last char in audio: ", strongSelf.textView.text.characters.last )
+            //if strongSelf.textView.text.characters.last != " "{
+            //  print("space added at beinning of text conversion")
+                //strongSelf.textView.text = (strongSelf.textView.text)! + " "
+                //currentText = (strongSelf.textView.text)!
+            //}
+            
             if let error = error {
                 strongSelf.textView.text = error.localizedDescription
             } else if let response = response {
@@ -147,7 +161,13 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
 
                                 //print("alternative transcript: ", alternative.transcript)
                                 if result.stability > 0.8 {
-                                    strongSelf.textView.text = currentText + alternative.transcript
+                                    if currentText.characters.last != " "{
+                                        
+                                        strongSelf.textView.text = currentText + " " + alternative.transcript
+                                    }
+                                    else{
+                                        strongSelf.textView.text = currentText + alternative.transcript
+                                    }
                                     //previousStringsStack.append(strongSelf.textView.text.lastWord)
                                 }
                                 if finished{
@@ -174,10 +194,14 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
       self.audioData = NSMutableData()
     }
   }
+    
     // returns json string
-    func getAlternatives(url_param: String) -> [String: AnyObject] {
+    func getAlternatives(url_param: String) -> [String] {
+        print("getting alternatives")
+        var alternatives = [String]()
         var data: [String: AnyObject] = [:]
         let url = URL(string: "https://api.datamuse.com/words?sl=" + url_param)
+        group.enter()
         URLSession.shared.dataTask(with: url!, completionHandler: {
             (data, response, error) in
             if(error != nil){
@@ -185,34 +209,20 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
             }else{
                 do{
                     let json = try JSON(data: data!)
-                    print(json[1]["word"])
-                    print(json[2]["word"])
-                    print(json[3]["word"])
+                    alternatives = [json[1]["word"].string!, json[2]["word"].string!, json[3]["word"].string!]
                 }catch let error as NSError{
                     print(error)
                 }
             }
+            self.group.leave()
         }).resume()
-        return data
+        
+        group.wait()
+        print("end of alternatives", alternatives)
+        return alternatives
     }
         
-//        let full_url = URL(string: "https://api.datamuse.com/words?sl=" + url)
-//
-//        let task = URLSession.shared.dataTask(with: full_url!) { data, response, error in
-//            guard error == nil else {
-//                print(error!)
-//                return
-//            }
-//            guard let data = data else {
-//                print("Data is empty")
-//                return
-//            }
-//
-//            json = (try! JSONSerialization.jsonObject(with: data, options: []) as? String)!
-//
-//            print("JSON String", json)
-//
-//
+
     @IBAction func exportButtonPressed(_ sender: Any) {
         let activityViewController = UIActivityViewController(activityItems: [textView.text], applicationActivities: nil)
         if let popoverPresentationController = activityViewController.popoverPresentationController {
@@ -221,7 +231,7 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
         present(activityViewController, animated: true, completion: nil)
     }
     
-    func getThreeWords(text: String, endIndex: String.Index){
+    /*func getThreeWords(text: String, endIndex: String.Index){
         // get last word
         let lastWord = text.substring(from: endIndex)
         // see if last word is in undo map
@@ -234,10 +244,15 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
                 // set the val for key to be first three words in the altArray
             }
         }
+    }*/
+    
+    // function to make undo popover show correctly
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
     }
     
-
     
+    let group = DispatchGroup()
     @IBOutlet weak var undoButton: UIButton!
     @IBAction func undoButtonPressed(_ sender: Any) {
         print("Undo pressed")
@@ -257,15 +272,21 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
             if let endIndex = tempText?.index((tempText?.endIndex)!, offsetBy: -1*offset) {
                 self.textView.text = String(tempText![..<endIndex])    // pos is an index, it works
             }
-            currentText = self.textView.text + " "
+            
+            currentText = self.textView.text 
+            getPredictedWordsDelegate?.getPredictedWords(json)
         }
         
         if recordAgain {
             recordAudio(self)
         }
-        
         print("undo")
-        
+    }
+    
+    //undoPopoverViewController.delegate = self
+    //Speech.undoPopoverViewController?.delegate = self
+    private func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: undoPopoverViewController) {
+        print("popover closed")
     }
     
     @IBOutlet weak var copyButton: UIButton!
@@ -289,7 +310,21 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
         currentText = ""
     }
     
+    //var globalPopoverController = popoverPresentationController()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        print("in view controller segue")
+        // displaying undo popover
+        if let popoverVC = segue.destination as? undoPopoverViewController {
+            popoverVC.selectedWordDelegate = self
+        }
+        
+        if segue.identifier == "showUndoPopover"{
+            let popoverViewController = segue.destination
+            popoverViewController.popoverPresentationController?.delegate = self
+            getPredictedWordsDelegate = segue.destination as! ClassGetPredictedWordsDelegate
+            return
+        }
         
         //MARK: step 5 create a reference of Class B and bind them through the prepareforsegue method
         if let nav = segue.destination as? UINavigationController, let classBVC = nav.topViewController as? SettingTableViewController {
@@ -300,6 +335,19 @@ class ViewController : UIViewController, AudioControllerDelegate, ClassBackgroun
         }
         
     }
+    
+    func getSelectedWord(_ word: String?) {
+        
+        if self.textView.text.characters.last == " "{
+            self.textView.text = self.textView.text + word!
+        }
+        else{
+            self.textView.text = self.textView.text + " " + word!
+        }
+        currentText = self.textView.text
+        print("it worked: ", word)
+    }
+    
     
     //MARK: step 6 finally use the method of the contract here
     func changeBackgroundColor(_ color: UIColor?) {
