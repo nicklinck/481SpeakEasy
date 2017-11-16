@@ -251,6 +251,54 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
         return UIModalPresentationStyle.none
     }
     
+    func addUndoScore(text: String){
+        var current_score = 0;
+        let request_url = URL(string: "https://api.myjson.com/bins/vhy1n")
+        URLSession.shared.dataTask(with: request_url!, completionHandler: {
+            (data, response, error) in
+            if(error != nil){
+                print("error")
+            }else{
+                do{
+                    let json = try JSON(data: data!)
+                    if json[text].exists(){
+                        current_score = json[text].int!
+                    }
+                }catch let error as NSError{
+                    print(error)
+                }
+            }
+        }).resume()
+        current_score += 1
+        
+        // prepare json data
+        let json: [String: Any] = [text: current_score]
+        
+        let jsonData = try? JSONSerialization.data(withJSONObject: json)
+        
+        // create post request
+        let url = URL(string: "https://api.myjson.com/bins/vhy1n")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        
+        // insert json data to the request
+        request.httpBody = jsonData
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "No data")
+                return
+            }
+            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
+            if let responseJSON = responseJSON as? [String: Any] {
+                print(responseJSON)
+            }
+        }
+        
+        task.resume()
+    }
+    
+
     
     let group = DispatchGroup()
     @IBOutlet weak var undoButton: UIButton!
@@ -264,6 +312,7 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
         
         if self.textView.text != "" {
             let tempText = self.textView.text
+            addUndoScore(text: (tempText?.lastWord)!)
             var json = getAlternatives(url_param: (tempText?.lastWord)!)
             var offset = (tempText?.lastWord.count)!+1
             if offset > (tempText?.count)!{
