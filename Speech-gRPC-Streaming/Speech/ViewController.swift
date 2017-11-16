@@ -348,6 +348,9 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
         print("it worked: ", word)
     }
     
+    @IBOutlet weak var exportButton: UIButton!
+    @IBOutlet weak var settingButton: UIButton!
+    
     
     //MARK: step 6 finally use the method of the contract here
     func changeBackgroundColor(_ color: UIColor?) {
@@ -356,44 +359,44 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
             self.copyButton.setTitleColor(.black, for: .normal)
             self.clearButton.setTitleColor(.black, for: .normal)
             self.undoButton.setTitleColor(.black, for: .normal)
-            self.startStreaming.setTitleColor(.black, for: .normal)
-            self.stopStreaming.setTitleColor(.black, for: .normal)
+            self.settingButton.setTitleColor(.black, for: .normal)
+            self.exportButton.setTitleColor(.black, for: .normal)
             
         }
         else if(view.backgroundColor == UIColor(red: 20/255.0, green: 50/255.0, blue: 64/255.0, alpha: 1.0)) {
             self.copyButton.setTitleColor(buttonColor, for: .normal)
             self.clearButton.setTitleColor(buttonColor, for: .normal)
             self.undoButton.setTitleColor(buttonColor, for: .normal)
-            self.startStreaming.setTitleColor(buttonColor, for: .normal)
-            self.stopStreaming.setTitleColor(buttonColor, for: .normal)
+            self.settingButton.setTitleColor(buttonColor, for: .normal)
+            self.exportButton.setTitleColor(buttonColor, for: .normal)
         }
         else if (view.backgroundColor == beccaColor) {
             self.copyButton.setTitleColor(UIColor(red: 131/255.0, green: 182/255.0, blue: 126/255.0, alpha: 1.0), for: .normal)
             self.clearButton.setTitleColor(UIColor(red: 131/255.0, green: 182/255.0, blue: 126/255.0, alpha: 1.0), for: .normal)
             self.undoButton.setTitleColor(UIColor(red: 131/255.0, green: 182/255.0, blue: 126/255.0, alpha: 1.0), for: .normal)
-            self.startStreaming.setTitleColor(UIColor(red: 131/255.0, green: 182/255.0, blue: 126/255.0, alpha: 1.0), for: .normal)
-            self.stopStreaming.setTitleColor(UIColor(red: 131/255.0, green: 182/255.0, blue: 126/255.0, alpha: 1.0), for: .normal)
+            self.settingButton.setTitleColor(UIColor(red: 131/255.0, green: 182/255.0, blue: 126/255.0, alpha: 1.0), for: .normal)
+            self.exportButton.setTitleColor(UIColor(red: 131/255.0, green: 182/255.0, blue: 126/255.0, alpha: 1.0), for: .normal)
         }
         else if (view.backgroundColor == chrisColor || view.backgroundColor == nickColor) {
             self.copyButton.setTitleColor(UIColor(red: 51/255.0, green: 51/255.0, blue: 73/255.0, alpha: 1.0), for: .normal)
             self.clearButton.setTitleColor(UIColor(red: 51/255.0, green: 51/255.0, blue: 73/255.0, alpha: 1.0), for: .normal)
             self.undoButton.setTitleColor(UIColor(red: 51/255.0, green: 51/255.0, blue: 73/255.0, alpha: 1.0), for: .normal)
-            self.startStreaming.setTitleColor(UIColor(red: 51/255.0, green: 51/255.0, blue: 73/255.0, alpha: 1.0), for: .normal)
-            self.stopStreaming.setTitleColor(UIColor(red: 51/255.0, green: 51/255.0, blue: 73/255.0, alpha: 1.0), for: .normal)
+            self.settingButton.setTitleColor(UIColor(red: 51/255.0, green: 51/255.0, blue: 73/255.0, alpha: 1.0), for: .normal)
+            self.exportButton.setTitleColor(UIColor(red: 51/255.0, green: 51/255.0, blue: 73/255.0, alpha: 1.0), for: .normal)
         }
         else if (view.backgroundColor == javierColor) {
             self.copyButton.setTitleColor(UIColor(red: 249/255.0, green: 85/255.0, blue: 30/255.0, alpha: 1.0), for: .normal)
             self.clearButton.setTitleColor(UIColor(red: 249/255.0, green: 85/255.0, blue: 30/255.0, alpha: 1.0), for: .normal)
             self.undoButton.setTitleColor(UIColor(red: 249/255.0, green: 85/255.0, blue: 30/255.0, alpha: 1.0), for: .normal)
-            self.startStreaming.setTitleColor(UIColor(red: 249/255.0, green: 85/255.0, blue: 30/255.0, alpha: 1.0), for: .normal)
-            self.stopStreaming.setTitleColor(UIColor(red: 249/255.0, green: 85/255.0, blue: 30/255.0, alpha: 1.0), for: .normal)
+            self.settingButton.setTitleColor(UIColor(red: 249/255.0, green: 85/255.0, blue: 30/255.0, alpha: 1.0), for: .normal)
+            self.exportButton.setTitleColor(UIColor(red: 249/255.0, green: 85/255.0, blue: 30/255.0, alpha: 1.0), for: .normal)
         }
         else {
             self.copyButton.setTitleColor(.white, for: .normal)
             self.clearButton.setTitleColor(.white, for: .normal)
             self.undoButton.setTitleColor(.white, for: .normal)
-            self.startStreaming.setTitleColor(.white, for: .normal)
-            self.stopStreaming.setTitleColor(.white, for: .normal)
+            self.settingButton.setTitleColor(.white, for: .normal)
+            self.exportButton.setTitleColor(.white, for: .normal)
         }
     }
     
