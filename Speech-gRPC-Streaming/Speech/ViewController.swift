@@ -176,7 +176,7 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
                                             if let endIndex = tempText?.index((tempText?.endIndex)!, offsetBy: -1*offset) {
                                                 strongSelf.textView.text = String(tempText![..<endIndex])    // pos is an index, it works
                                             }
-                                            strongSelf.textView.text = currentText + alternatives![0]
+                                            strongSelf.textView.text = currentText + " " + alternatives![0]
                                         }
                                         else{
                                             strongSelf.textView.text = currentText + " " + alternative.transcript
