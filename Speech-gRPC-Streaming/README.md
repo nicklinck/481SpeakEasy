@@ -1,22 +1,32 @@
-# Cloud Speech Streaming gRPC Swift Sample
+# SpeakEasy Beta Release
 
-This app demonstrates how to make streaming gRPC connections to the [Cloud Speech API](https://cloud.google.com/speech/) to recognize speech in recorded audio.
+This app demonstrates how to make streaming gRPC connections to the [Cloud Speech API](https://cloud.google.com/speech/) to recognize speech in recorded audio and using Datamuse API find words that match a given set of constraints and that are likely in a given context.
 
 ## Prerequisites
 - An API key for the Cloud Speech API (See
   [the docs][getting-started] to learn more)
 - An OSX machine or emulator
-- [Xcode 8 beta 6][xcode] or later
+- [Xcode 9][xcode] or later
 - [Cocoapods][cocoapods] version 1.0 or later
 
 ## Quickstart
 - Clone this repo and `cd` into this directory.
 - Run `./INSTALL`
-- In `Speech/SpeechRecognitionService.swift`, replace `YOUR_API_KEY` with the API key obtained above.
+- `open Speech.xcworkspace` to open this project in Xcode. Since we are using Cocoapods, be sure to open the workspace and not Speech.xcodeproj.
+- In `Speech/SpeechRecognitionService.swift`, replace `YOUR_API_KEY` with the API key obtained above (use our key already inserted)
 - Build and run the app.
 
+## Using the App
+-Tap the `start streaming` button to begin recording.
+-Tap the `stop streaming` button to end the recording (can press `start streaming` to continue from the old text).
+-Tap the `clear` button to clear the text field.
+-Tap the `copy` button to copy text to the clipboard to be exported.
+-Tap the `undo` button to undo the last word on the screen.  A prompt will show up three likely alternatives or the user can manually type the word.
+-tap the `settings` button to navigate to a new view to change the background color, font color, font size and font.
+-tap the `export` button to export the current text field to a selected app.
 
-## Running the app
+
+## Running the App (Setting up Google Cloud)
 
 - As with all Google Cloud APIs, every call to the Speech API must be associated
   with a project within the [Google Cloud Console][cloud-console] that has the
