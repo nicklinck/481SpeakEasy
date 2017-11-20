@@ -17,13 +17,13 @@ This app demonstrates how to make streaming gRPC connections to the [Cloud Speec
 - Build and run the app.
 
 ## Using the App
--Tap the `start streaming` button to begin recording.
--Tap the `stop streaming` button to end the recording (can press `start streaming` to continue from the old text).
--Tap the `clear` button to clear the text field.
--Tap the `copy` button to copy text to the clipboard to be exported.
--Tap the `undo` button to undo the last word on the screen.  A prompt will show up three likely alternatives or the user can manually type the word.
--tap the `settings` button to navigate to a new view to change the background color, font color, font size and font.
--tap the `export` button to export the current text field to a selected app.
+- Tap the `Start Streaming` button to begin recording.
+- Tap the `Stop Streaming` button to end the recording (can press `start streaming` to continue from the old text).
+- Tap the `Clear` button to clear the text field.
+- Tap the `Copy` button to copy text to the clipboard to be exported.
+- Tap the `Undo` button to undo the last word on the screen.  A prompt will show up three likely alternatives or the user can manually type the word.
+- Tap the `Settings` button to navigate to a new view to change the background color, font color, font size and font.
+- Tap the `Export` button to export the current text field to a selected app.
 
 
 ## Running the App (Setting up Google Cloud)
