@@ -240,7 +240,7 @@
 #endif
 #define GPR_MSG_IOVLEN_TYPE int
 #if TARGET_OS_IPHONE
-#define GPR_FORBID_UNREACHABLE_CODE 1
+//#define GPR_FORBID_UNREACHABLE_CODE 1
 #define GPR_PLATFORM_STRING "ios"
 #define GPR_CPU_IPHONE 1
 #define GPR_PTHREAD_TLS 1
@@ -449,11 +449,7 @@ typedef unsigned __int64 uint64_t;
 #endif /* GPRC_PRINT_FORMAT_CHECK */
 
 #if GPR_FORBID_UNREACHABLE_CODE
-#define GPR_UNREACHABLE_CODE(STATEMENT)             \
-    do {                                            \
-        abort();                                    \
-        STATEMENT;                                        \
-    } while (0)
+#define GPR_UNREACHABLE_CODE(STATEMENT)
 #else
 #define GPR_UNREACHABLE_CODE(STATEMENT)             \
   do {                                              \
