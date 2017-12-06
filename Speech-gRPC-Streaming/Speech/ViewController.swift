@@ -243,7 +243,7 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
     @IBAction func exportButtonPressed(_ sender: Any) {
         let activityViewController = UIActivityViewController(activityItems: [textView.text], applicationActivities: nil)
         if let popoverPresentationController = activityViewController.popoverPresentationController {
-            popoverPresentationController.barButtonItem = (sender as! UIBarButtonItem)
+            //popoverPresentationController.barButtonItem = (sender as! UIBarButtonItem)
         }
         present(activityViewController, animated: true, completion: nil)
     }
