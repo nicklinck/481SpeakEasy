@@ -161,9 +161,6 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3qM-WJ-E3q">
                                 <rect key="frame" x="172" y="669" width="70" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="60" id="TBi-dW-Oa0"/>
-                                </constraints>
                                 <state key="normal" image="action_icon"/>
                                 <connections>
                                     <action selector="exportButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="D7j-Et-6qB"/>
