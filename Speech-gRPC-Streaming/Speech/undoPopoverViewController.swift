@@ -20,7 +20,7 @@ class undoPopoverViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.tableView.tableFooterView = UIView(frame: CGRect.zero)
+        //self.tableView.tableFooterView = UIView(frame: CGRect.zero)
         // Do any additional setup after loading the view.
     }
 
@@ -49,15 +49,32 @@ class undoPopoverViewController: UIViewController, UITableViewDelegate, UITableV
     
     //number of rows in the table
     internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return 3
+        return 4
+    }
+    
+    var cell2: OtherInputTableViewCell!
+    
+    @IBAction func replaceButtonIsPressed(_ sender: Any) {
+        //var otherCell = OtherInputTableViewCell()
+        //otherCell.configure(text: "hi", placeholder: "If none are correct")
+        selectedWordDelegate?.getSelectedWord(cell2.otherTextField.text)
+        self.dismiss(animated: false, completion: nil)
     }
     
     //creating table view cell
     internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         print("setting up table view")
+        
         let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "predictedWordCell")
         if indexPath.row != 3{
             cell.textLabel?.text = cell_array[indexPath.row]
+        }
+        print("index row: ", indexPath.row)
+        if indexPath.row == 3{
+            cell2 = tableView.dequeueReusableCell(withIdentifier: "TextFieldsCell") as! OtherInputTableViewCell
+            
+            cell2.configure(text: "", placeholder: "If none are correct")
+            return cell2
         }
         return cell
     }
@@ -69,6 +86,7 @@ class undoPopoverViewController: UIViewController, UITableViewDelegate, UITableV
         let currentCell = tableView.cellForRow(at: indexPath!) as! UITableViewCell
         
         print(currentCell.textLabel!.text)
+        
         var selectedWord = currentCell.textLabel!.text!
         selectedWordDelegate?.getSelectedWord(selectedWord)
         self.dismiss(animated: false, completion: nil)

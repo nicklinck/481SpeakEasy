@@ -46,6 +46,7 @@
 		D3E34EA11D77541D00EF755D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E34EA01D77541D00EF755D /* AppDelegate.swift */; };
 		D3E34EA51D7757CC00EF755D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E34EA41D7757CC00EF755D /* ViewController.swift */; };
 		F84EE5051FBC9C29002E8AE8 /* undoPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84EE5041FBC9C29002E8AE8 /* undoPopoverViewController.swift */; };
+		F87E15721FDDE40F00BA931F /* OtherInputTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E15711FDDE40F00BA931F /* OtherInputTableViewCell.swift */; };
 		F8AE56531FB9F42400D1C487 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8AE56541FB9F42400D1C487 /* SwiftyJSON.framework */; };
 /* End PBXBuildFile section */
 
@@ -152,6 +153,7 @@
 		D3E34EA41D7757CC00EF755D /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		F3215BCD5D87DFF7F2965B8A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		F84EE5041FBC9C29002E8AE8 /* undoPopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = undoPopoverViewController.swift; sourceTree = "<group>"; };
+		F87E15711FDDE40F00BA931F /* OtherInputTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherInputTableViewCell.swift; sourceTree = "<group>"; };
 		F8AE56541FB9F42400D1C487 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -257,6 +259,7 @@
 				D34C17DD1C948F5800D69BCA /* Info.plist */,
 				D34C17DA1C948F5800D69BCA /* LaunchScreen.storyboard */,
 				D392D9851C94937D002F5132 /* Main.storyboard */,
+				F87E15711FDDE40F00BA931F /* OtherInputTableViewCell.swift */,
 				F84EE5041FBC9C29002E8AE8 /* undoPopoverViewController.swift */,
 				D3E34E9F1D77541C00EF755D /* Speech-Bridging-Header.h */,
 				D31E0EB71D778A56006A50AB /* SpeechRecognitionService.swift */,
@@ -513,6 +516,7 @@
 				D3E34EA51D7757CC00EF755D /* ViewController.swift in Sources */,
 				96D97ACC1FB6B4A10034EA38 /* SpringTextField.swift in Sources */,
 				96D97AD61FB6B4A10034EA38 /* LoadingView.swift in Sources */,
+				F87E15721FDDE40F00BA931F /* OtherInputTableViewCell.swift in Sources */,
 				D3E34EA11D77541D00EF755D /* AppDelegate.swift in Sources */,
 				96D97ACF1FB6B4A10034EA38 /* SpringAnimation.swift in Sources */,
 				96D97ADF1FB6B4A10034EA38 /* DesignableImageView.swift in Sources */,
