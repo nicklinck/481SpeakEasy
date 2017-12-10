@@ -316,7 +316,7 @@ class SettingTableViewController: UITableViewController {
     @IBAction func changeFont1(_ sender: Any) {
         current_font = "Didot"
         delegate4?.changeFont(UIFont(name: "Didot", size: CGFloat(current_font_size)))
-        selected(currentButton: 3, buttonType: fontButtons)
+        selected(currentButton: 4, buttonType: fontButtons)
         didotFontButton.animation = "pop"
         didotFontButton.animate()
     }
@@ -324,7 +324,7 @@ class SettingTableViewController: UITableViewController {
         current_font = "Courier"
         delegate4?.changeFont(UIFont(name: "Courier", size: CGFloat(current_font_size)))
         courierFontButton.animation = "pop"
-        selected(currentButton: 4, buttonType: fontButtons)
+        selected(currentButton: 3, buttonType: fontButtons)
         courierFontButton.animate()
     }
     @IBAction func fontGeorgia(_ sender: Any) {
@@ -369,11 +369,7 @@ class SettingTableViewController: UITableViewController {
         selected(currentButton: 10, buttonType: fontButtons)
         verdanaFontButton.animate()
     }
-    
-    //checkmarks for tableview not button
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCellAccessoryType.checkmark
-    }
+
     
     private func loadSettings() {
         let setting1 = UIButton()
