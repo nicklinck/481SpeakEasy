@@ -25,6 +25,9 @@ let userDefaults =  UserDefaults.standard
 
 var currentText = ""
 var altArray: [String] = []
+var altDict: [String: [String: Int]]
+var totalDict: [String: Int]
+var undoDict: [String: Int]
 //var previousStringsStack = []
 
 let buttonColor = UIColor(red: 61/255.0, green: 136/255.0, blue: 209/255.0, alpha: 1.0)
@@ -268,11 +271,16 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
         return UIModalPresentationStyle.none
     }
     
-    func addTotalScore(text: String){
+    func getScore(type: String){
+        if (type == "total"){
+            let url = URL(string: "https://api.myjson.com/bins/smgqj")!
+        }
+        else {
+            let url = URL(string: "https://api.myjson.com/bins/h6q7f")!
+        }
         // create post request
         var curr_score = 0
         var json: [String: Int] = [:]
-        let url = URL(string: "https://api.myjson.com/bins/smgqj")!
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "GET"
@@ -290,156 +298,155 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
         }
         task.resume()
         group.wait()
-        var jsonDict: [String: Any]
-        
-        if json[text] != nil {
-            curr_score = json[text] as! Int
+        if (type == "total") {
+            totalDict = json
         }
-        
-        json[text] = curr_score + 1
-        
-        jsonDict = json
-        
-        
-        //let jsonDict = [text: curr_score]
-        let jsonData = try! JSONSerialization.data(withJSONObject: jsonDict, options: [])
-        let put_url = URL(string: "https://api.myjson.com/bins/smgqj")!
-        
-        var put_request = URLRequest(url: put_url)
-        put_request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        put_request.httpMethod = "PUT"
-        
-        // insert json data to the request
-        put_request.httpBody = jsonData
-        var backToString = String(data: jsonData, encoding: String.Encoding.utf8) as String!
-        group.enter()
-        let put = URLSession.shared.dataTask(with: put_request) { data, response, error in
-            guard let data = data, error == nil else {
-                print(error?.localizedDescription ?? "No data")
-                return
-            }
-            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
-            if let responseJSON = responseJSON as? [String: Any] {
-                //print(responseJSON)
-            }
-            self.group.leave()
+        else {
+            undoDict = json
         }
-        put.resume()
-        group.wait()
+    }
+        
+        
+        // KEEP: this is how we put the data back
+//        //let jsonDict = [text: curr_score]
+//        let jsonData = try! JSONSerialization.data(withJSONObject: jsonDict, options: [])
+//        let put_url = URL(string: "https://api.myjson.com/bins/smgqj")!
+//
+//        var put_request = URLRequest(url: put_url)
+//        put_request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        put_request.httpMethod = "PUT"
+//
+//        // insert json data to the request
+//        put_request.httpBody = jsonData
+//        var backToString = String(data: jsonData, encoding: String.Encoding.utf8) as String!
+//        group.enter()
+//        let put = URLSession.shared.dataTask(with: put_request) { data, response, error in
+//            guard let data = data, error == nil else {
+//                print(error?.localizedDescription ?? "No data")
+//                return
+//            }
+//            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
+//            if let responseJSON = responseJSON as? [String: Any] {
+//                //print(responseJSON)
+//            }
+//            self.group.leave()
+//        }
+//        put.resume()
+//        group.wait()
     }
     
     
-    func addUndoScore(text: String){
-        // create post request
-        var curr_score = 0
-        var json: [String: Int] = [:]
-        let url = URL(string: "https://api.myjson.com/bins/h6q7f")!
-        var request = URLRequest(url: url)
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpMethod = "GET"
-        group.enter()
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                print(error?.localizedDescription ?? "No data")
-                return
-            }
-            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [.allowFragments])
-            if let responseJSON = responseJSON as? [String: Int] {
-                json = responseJSON
-            }
-            self.group.leave()
-        }
-        task.resume()
-        group.wait()
-        
-        var jsonDict: [String: Any]
-        
-        if json[text] != nil {
-            curr_score = json[text] as! Int
-        }
-        
-        json[text] = curr_score + 1
-
-        jsonDict = json
-        
-        //let jsonDict = [text: curr_score]
-        let jsonData = try! JSONSerialization.data(withJSONObject: jsonDict, options: [])
-        let put_url = URL(string: "https://api.myjson.com/bins/h6q7f")!
-
-        var put_request = URLRequest(url: put_url)
-        put_request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        put_request.httpMethod = "PUT"
-
-        // insert json data to the request
-        put_request.httpBody = jsonData
-        
-        group.enter()
-        let put = URLSession.shared.dataTask(with: put_request) { data, response, error in
-            guard let data = data, error == nil else {
-                print(error?.localizedDescription ?? "No data")
-                return
-            }
-            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
-            if let responseJSON = responseJSON as? [String: Any] {
-                //print(responseJSON)
-            }
-            self.group.leave()
-        }
-        put.resume()
-        group.wait()
-    }
-    
-    func getUndoPercent(text: String) -> Float {
-        print("getting percents")
-        var undo_json: [String: Int] = [:]
-        let undo_url = URL(string: "https://api.myjson.com/bins/h6q7f")!
-        var undo_request = URLRequest(url: undo_url)
-        undo_request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        undo_request.httpMethod = "GET"
-        group.enter()
-        let undo_task = URLSession.shared.dataTask(with: undo_request) { data, response, error in
-            guard let data = data, error == nil else {
-                print(error?.localizedDescription ?? "No data")
-                return
-            }
-            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [.allowFragments])
-            if let responseJSON = responseJSON as? [String: Int] {
-                undo_json = responseJSON
-            }
-            self.group.leave()
-        }
-        undo_task.resume()
-        group.wait()
-        
-        var json: [String: Int] = [:]
-        let url = URL(string: "https://api.myjson.com/bins/smgqj")!
-        var request = URLRequest(url: url)
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpMethod = "GET"
-        group.enter()
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                print(error?.localizedDescription ?? "No data")
-                return
-            }
-            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [.allowFragments])
-            if let responseJSON = responseJSON as? [String: Int] {
-                json = responseJSON
-            }
-            self.group.leave()
-        }
-        task.resume()
-        group.wait()
-        
-        print("undo scores \(undo_json)")
-        print("total scores \(json)")
-
-        if json[text] != nil && undo_json[text] != nil{
-            return Float(undo_json[text]!) / Float(json[text]!)
-        }
-        return 0
-    }
-    
+//    func addUndoScore(text: String){
+//        // create post request
+//        var curr_score = 0
+//        var json: [String: Int] = [:]
+//        let url = URL(string: "https://api.myjson.com/bins/h6q7f")!
+//        var request = URLRequest(url: url)
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.httpMethod = "GET"
+//        group.enter()
+//        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+//            guard let data = data, error == nil else {
+//                print(error?.localizedDescription ?? "No data")
+//                return
+//            }
+//            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [.allowFragments])
+//            if let responseJSON = responseJSON as? [String: Int] {
+//                json = responseJSON
+//            }
+//            self.group.leave()
+//        }
+//        task.resume()
+//        group.wait()
+//
+//        var jsonDict: [String: Any]
+//
+//        if json[text] != nil {
+//            curr_score = json[text] as! Int
+//        }
+//
+//        json[text] = curr_score + 1
+//
+//        jsonDict = json
+//
+//        //let jsonDict = [text: curr_score]
+//        let jsonData = try! JSONSerialization.data(withJSONObject: jsonDict, options: [])
+//        let put_url = URL(string: "https://api.myjson.com/bins/h6q7f")!
+//
+//        var put_request = URLRequest(url: put_url)
+//        put_request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        put_request.httpMethod = "PUT"
+//
+//        // insert json data to the request
+//        put_request.httpBody = jsonData
+//
+//        group.enter()
+//        let put = URLSession.shared.dataTask(with: put_request) { data, response, error in
+//            guard let data = data, error == nil else {
+//                print(error?.localizedDescription ?? "No data")
+//                return
+//            }
+//            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
+//            if let responseJSON = responseJSON as? [String: Any] {
+//                //print(responseJSON)
+//            }
+//            self.group.leave()
+//        }
+//        put.resume()
+//        group.wait()
+//    }
+//
+//    func getUndoPercent(text: String) -> Float {
+//        print("getting percents")
+//        var undo_json: [String: Int] = [:]
+//        let undo_url = URL(string: "https://api.myjson.com/bins/h6q7f")!
+//        var undo_request = URLRequest(url: undo_url)
+//        undo_request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        undo_request.httpMethod = "GET"
+//        group.enter()
+//        let undo_task = URLSession.shared.dataTask(with: undo_request) { data, response, error in
+//            guard let data = data, error == nil else {
+//                print(error?.localizedDescription ?? "No data")
+//                return
+//            }
+//            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [.allowFragments])
+//            if let responseJSON = responseJSON as? [String: Int] {
+//                undo_json = responseJSON
+//            }
+//            self.group.leave()
+//        }
+//        undo_task.resume()
+//        group.wait()
+//
+//        var json: [String: Int] = [:]
+//        let url = URL(string: "https://api.myjson.com/bins/smgqj")!
+//        var request = URLRequest(url: url)
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.httpMethod = "GET"
+//        group.enter()
+//        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+//            guard let data = data, error == nil else {
+//                print(error?.localizedDescription ?? "No data")
+//                return
+//            }
+//            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [.allowFragments])
+//            if let responseJSON = responseJSON as? [String: Int] {
+//                json = responseJSON
+//            }
+//            self.group.leave()
+//        }
+//        task.resume()
+//        group.wait()
+//
+//        print("undo scores \(undo_json)")
+//        print("total scores \(json)")
+//
+//        if json[text] != nil && undo_json[text] != nil{
+//            return Float(undo_json[text]!) / Float(json[text]!)
+//        }
+//        return 0
+//    }
+//
 
     
     let group = DispatchGroup()
