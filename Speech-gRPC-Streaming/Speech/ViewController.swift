@@ -171,7 +171,7 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
                             if let alternative = alternative as? SpeechRecognitionAlternative{
 
                                 //print("alternative transcript: ", alternative.transcript)
-                                if result.stability > 0.8 {
+                                if result.stability > 0.7 {
                                     if currentText.characters.last != " "{
                                         var percent = self?.getUndoPercent(text: (alternative.transcript.lastWord).trimmingCharacters(in: .whitespaces)) as! Float
                                         print("percent \(percent)")
