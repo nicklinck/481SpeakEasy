@@ -626,6 +626,36 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
         self.textView.font = fontSize
     }
     
+    @IBAction func helpButton(_ sender: Any) {
+        setupSpotlight()
+    }
+    
+    
+    
+    func setupSpotlight() {
+        let SpotlightMargin = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        let startStopSLRect = CGRect(x: startStreaming.frame.origin.x, y: startStreaming.frame.origin.y, width: startStreaming.frame.size.width, height: startStreaming.frame.size.height)
+        let startStopSpotlight = AwesomeSpotlight(withRect: startStopSLRect, shape: .roundRectangle, text: "Click to Start Recording", margin: SpotlightMargin)
+        let startStopSpotlightDesc = AwesomeSpotlight(withRect: startStopSLRect, shape: .roundRectangle, text: "Click Stop Only After You See Your Last Word Spoken", margin: SpotlightMargin)
+        let UndoSLRect = CGRect(x: undoButton.frame.origin.x, y: undoButton.frame.origin.y, width: undoButton.frame.size.width, height: undoButton.frame.size.height)
+        let UndoSpotlight = AwesomeSpotlight(withRect: UndoSLRect, shape: .roundRectangle, text: "Undoes Previous Word Only", margin: SpotlightMargin)
+        let CopySLRect = CGRect(x: copyButton.frame.origin.x, y: copyButton.frame.origin.y, width: copyButton.frame.size.width, height: copyButton.frame.size.height)
+        let CopySpotlight = AwesomeSpotlight(withRect: CopySLRect, shape: .roundRectangle, text: "Copies Text to Clipboard", margin: SpotlightMargin)
+        let ExportSLRect = CGRect(x: exportButton.frame.origin.x, y: exportButton.frame.origin.y, width: exportButton.frame.size.width, height: exportButton.frame.size.height)
+        let ExportSpotlight = AwesomeSpotlight(withRect: ExportSLRect, shape: .roundRectangle, text: "Exports Text to Any Application", margin: SpotlightMargin)
+        let ClearSLRect = CGRect(x: clearButton.frame.origin.x, y: clearButton.frame.origin.y, width: clearButton.frame.size.width, height: clearButton.frame.size.height)
+        let ClearSpotlight = AwesomeSpotlight(withRect: ClearSLRect, shape: .roundRectangle, text: "Clears Text Field Above", margin: SpotlightMargin)
+        let SettingsSLRect = CGRect(x: settingButton.frame.origin.x, y: settingButton.frame.origin.y, width: settingButton.frame.size.width, height: settingButton.frame.size.height)
+        let SettingsSpotlight = AwesomeSpotlight(withRect: SettingsSLRect, shape: .roundRectangle, text: "Customize This Interface", margin: SpotlightMargin)
+        let spotlightView = AwesomeSpotlightView(frame: view.frame, spotlight: [startStopSpotlight, startStopSpotlightDesc, UndoSpotlight, CopySpotlight, ExportSpotlight, ClearSpotlight, SettingsSpotlight])
+        view.addSubview(spotlightView)
+        spotlightView.enableSkipButton = true
+        spotlightView.start()
+    
+    }
+    
+
+    
     
     
 }

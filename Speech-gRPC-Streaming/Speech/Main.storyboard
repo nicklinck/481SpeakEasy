@@ -58,11 +58,11 @@
                         <viewControllerLayoutGuide type="bottom" id="1FE-B8-Sc3"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="NkE-LE-U77">
-                        <rect key="frame" x="0.0" y="0.0" width="250" height="144"/>
+                        <rect key="frame" x="0.0" y="0.0" width="250" height="190"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="iki-dA-nNs">
-                                <rect key="frame" x="0.0" y="0.0" width="250" height="144"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="iki-dA-nNs">
+                                <rect key="frame" x="0.0" y="0.0" width="250" height="190"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexBackgroundColor" red="0.32214769720000003" green="0.56376236680000003" blue="0.81298667189999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
@@ -73,6 +73,34 @@
                                             <rect key="frame" x="0.0" y="0.0" width="250" height="29.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TextFieldsCell" rowHeight="49" id="gHV-5R-jPo" customClass="OtherInputTableViewCell" customModule="Speech" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="58" width="250" height="49"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gHV-5R-jPo" id="idz-cG-d78">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="48.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="s1D-Qo-DZe">
+                                                    <rect key="frame" x="15" y="9" width="153" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yNl-1j-d0Q">
+                                                    <rect key="frame" x="184" y="9" width="51" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" title="replace"/>
+                                                    <connections>
+                                                        <action selector="replaceButtonIsPressed:" destination="qJc-xt-uHg" eventType="touchUpInside" id="B9g-if-iT2"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="otherTextField" destination="s1D-Qo-DZe" id="D5J-DO-aoB"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -88,16 +116,16 @@
                             <constraint firstItem="iki-dA-nNs" firstAttribute="leading" secondItem="NkE-LE-U77" secondAttribute="leading" id="afw-pT-47M"/>
                         </constraints>
                     </view>
-                    <value key="contentSizeForViewInPopover" type="size" width="250" height="144"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="250" height="190"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="250" height="144"/>
+                    <size key="freeformSize" width="250" height="190"/>
                     <connections>
                         <outlet property="tableView" destination="iki-dA-nNs" id="Ng2-dJ-FSd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ymv-pT-GqS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-958.39999999999998" y="-407.94602698650675"/>
+            <point key="canvasLocation" x="-958.39999999999998" y="-408.84557721139436"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -143,10 +171,17 @@
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </textAttributes>
                                 <items>
-                                    <navigationItem title="SpeakEasy" id="xCD-A5-Nn4"/>
+                                    <navigationItem title="SpeakEasy" id="xCD-A5-Nn4">
+                                        <barButtonItem key="rightBarButtonItem" title="Item" image="help_icon" id="921-65-vxt">
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <connections>
+                                                <action selector="helpButton:" destination="BYZ-38-t0r" id="lyZ-w1-lm2"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
                                 </items>
                             </navigationBar>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Press &quot;Start Recording&quot; to begin converting speech to text! " textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="vtY-SX-V3c">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" editable="NO" text="Press &quot;Start Recording&quot; to begin converting speech to text! " textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="vtY-SX-V3c">
                                 <rect key="frame" x="19" y="84" width="340" height="392"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="24"/>
@@ -1320,6 +1355,7 @@
         <image name="action_icon" width="150" height="150"/>
         <image name="copy3" width="512" height="512"/>
         <image name="delete" width="512" height="512"/>
+        <image name="help_icon" width="33" height="30"/>
         <image name="record" width="360" height="360"/>
         <image name="settings_3" width="120" height="120"/>
         <image name="stop" width="360" height="360"/>
