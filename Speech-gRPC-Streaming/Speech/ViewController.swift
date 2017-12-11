@@ -25,6 +25,10 @@ let userDefaults =  UserDefaults.standard
 
 var currentText = ""
 var altArray: [String] = []
+var altDict: [String: [String: Int]] = [:]
+var totalDict: [String: Int] = [:]
+var undoDict: [String: Int] = [:]
+var undone = ""
 //var previousStringsStack = []
 
 let buttonColor = UIColor(red: 61/255.0, green: 136/255.0, blue: 209/255.0, alpha: 1.0)
@@ -76,7 +80,13 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
     let backColor = UIColor(red: 20/255.0, green: 50/255.0, blue: 64/255.0, alpha: 1.0)
     
   override func viewDidLoad() {
-    
+    // initialize our arrays
+    getScore(type: "undo")
+    getScore(type: "total")
+    getScore(type: "alt")
+    print(totalDict)
+    print(undoDict)
+    print(altDict)
     super.viewDidLoad()
     self.stopStreaming.isHidden = true
     AudioController.sharedInstance.delegate = self
@@ -110,6 +120,10 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
     
     @IBOutlet weak var stopStreaming: UIButton!
     @IBAction func stopAudio(_ sender: NSObject) {
+        // update json files
+        updateScore(type: "total")
+        updateScore(type: "undo")
+        updateScore(type: "alt")
     timer.invalidate()
     _ = AudioController.sharedInstance.stop()
     SpeechRecognitionService.sharedInstance.stopStreaming()
@@ -166,6 +180,7 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
                                     if currentText.characters.last != " "{
                                         var percent = self?.getUndoPercent(text: (alternative.transcript.lastWord).trimmingCharacters(in: .whitespaces)) as! Float
                                         print("percent \(percent)")
+                                        // If it has been wrongly predicted 60% of the time or more, replace with next best contender
                                         if percent > 0.60 {
                                             var alternatives = self?.getAlternatives(url_param: (alternative.transcript.lastWord).trimmingCharacters(in: .whitespaces))
                                             let tempText = strongSelf.textView.text
@@ -181,7 +196,7 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
                                         else{
                                             strongSelf.textView.text = currentText + " " + alternative.transcript
                                         }
-                                        self?.addTotalScore(text: (alternative.transcript.lastWord).trimmingCharacters(in: .whitespaces))
+                                        //self?.addTotalScore(text: (alternative.transcript.lastWord).trimmingCharacters(in: .whitespaces))
                                         //print(self?.getUndoPercent(text: (strongSelf.textView.text.lastWord).trimmingCharacters(in: .whitespaces)))
                                     }
                                     
@@ -214,27 +229,53 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
     
     // returns json string
     func getAlternatives(url_param: String) -> [String] {
+        var need_wait = false
         print("getting alternatives")
         var alternatives = [String]()
-        var data: [String: AnyObject] = [:]
-        let url = URL(string: "https://api.datamuse.com/words?sl=" + url_param)
-        group.enter()
-        URLSession.shared.dataTask(with: url!, completionHandler: {
-            (data, response, error) in
-            if(error != nil){
-                print("error")
-            }else{
-                do{
-                    let json = try JSON(data: data!)
-                    alternatives = [json[1]["word"].string!, json[2]["word"].string!, json[3]["word"].string!]
-                }catch let error as NSError{
-                    print(error)
+        var altArray: [String: Int] = [:]
+        // is it in the json?
+        if (altDict[url_param] != nil) {
+            print(altDict[url_param])
+            altArray = altDict[url_param]!
+            var keys = Array(altArray.keys)
+            alternatives = keys
+        }
+        else {
+            need_wait = true
+            // get the words from datamuse and populate the json
+            var data: [String: AnyObject] = [:]
+            let url = URL(string: "https://api.datamuse.com/words?sl=" + url_param)
+            group.enter()
+            URLSession.shared.dataTask(with: url!, completionHandler: {
+                (data, response, error) in
+                if(error != nil){
+                    print("error")
+                }else{
+                    do{
+                        let json = try JSON(data: data!)
+                        alternatives = [json[1]["word"].string!, json[2]["word"].string!, json[3]["word"].string!]
+                    }catch let error as NSError{
+                        print(error)
+                    }
                 }
-            }
-            self.group.leave()
-        }).resume()
+                self.group.leave()
+            }).resume()
+            
+        }
+        
         
         group.wait()
+        if (need_wait){
+            print("ALTERNATIVES \(alternatives)")
+            var newJson: [String: Int] = [:]
+            for word in alternatives {
+                print("DIS WORD \(word)")
+                newJson[word] = 0
+            }
+            print("NEW JSON \(newJson)")
+            altDict[url_param] = newJson
+            print("ALT DICTIONARY \(altDict)")
+        }
         print("end of alternatives", alternatives)
         return alternatives
     }
@@ -268,12 +309,22 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
         return UIModalPresentationStyle.none
     }
     
-    func addTotalScore(text: String){
+    func getScore(type: String){
+        var json: [String: Int] = [:]
+        var altJson: [String: [String: Int]] = [:]
+        var url = URL(string: "")
+        if (type == "total"){
+            url = URL(string: "https://api.myjson.com/bins/smgqj")!
+        }
+        else if (type == "undo"){
+            url = URL(string: "https://api.myjson.com/bins/h6q7f")!
+        }
+        else {
+            url = URL(string: "https://api.myjson.com/bins/1gftxr")!
+        }
         // create post request
         var curr_score = 0
-        var json: [String: Int] = [:]
-        let url = URL(string: "https://api.myjson.com/bins/smgqj")!
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: url!)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "GET"
         group.enter()
@@ -286,32 +337,88 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
             if let responseJSON = responseJSON as? [String: Int] {
                 json = responseJSON
             }
+            else if let responseJSON = responseJSON as? [String: [String: Int]]{
+                altJson = responseJSON
+            }
             self.group.leave()
         }
         task.resume()
         group.wait()
-        var jsonDict: [String: Any]
+        if (type == "total") {
+            totalDict = json
+        }
+        else if (type == "undo"){
+            undoDict = json
+        }
+        else {
+            altDict = altJson
+    }
         
-        if json[text] != nil {
-            curr_score = json[text] as! Int
+       
+        
+        
+        // KEEP: this is how we put the data back
+//        //let jsonDict = [text: curr_score]
+//        let jsonData = try! JSONSerialization.data(withJSONObject: jsonDict, options: [])
+//        let put_url = URL(string: "https://api.myjson.com/bins/smgqj")!
+//
+//        var put_request = URLRequest(url: put_url)
+//        put_request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        put_request.httpMethod = "PUT"
+//
+//        // insert json data to the request
+//        put_request.httpBody = jsonData
+//        var backToString = String(data: jsonData, encoding: String.Encoding.utf8) as String!
+//        group.enter()
+//        let put = URLSession.shared.dataTask(with: put_request) { data, response, error in
+//            guard let data = data, error == nil else {
+//                print(error?.localizedDescription ?? "No data")
+//                return
+//            }
+//            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
+//            if let responseJSON = responseJSON as? [String: Any] {
+//                //print(responseJSON)
+//            }
+//            self.group.leave()
+//        }
+//        put.resume()
+//        group.wait()
+    }
+    
+    func updateScore(type: String){
+        print("IN HERE")
+        var dict: [String: Int] = [:]
+        var alterDict: [String: [String:Int]] = [:]
+        var url = URL(string: "")
+        if (type == "total"){
+            url = URL(string: "https://api.myjson.com/bins/smgqj")!
+            dict = totalDict
+        }
+        else if (type == "undo"){
+            url = URL(string: "https://api.myjson.com/bins/h6q7f")!
+            dict = undoDict
+        }
+        else {
+            url = URL(string: "https://api.myjson.com/bins/1gftxr")!
+            alterDict = altDict
         }
         
-        json[text] = curr_score + 1
-        
-        jsonDict = json
-        
-        
-        //let jsonDict = [text: curr_score]
-        let jsonData = try! JSONSerialization.data(withJSONObject: jsonDict, options: [])
-        let put_url = URL(string: "https://api.myjson.com/bins/smgqj")!
-        
-        var put_request = URLRequest(url: put_url)
+        let jsonData = try! JSONSerialization.data(withJSONObject: dict, options: [])
+        let alterJsonData = try! JSONSerialization.data(withJSONObject: alterDict, options: [])
+        let put_url = url
+
+        var put_request = URLRequest(url: put_url!)
         put_request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         put_request.httpMethod = "PUT"
-        
+
         // insert json data to the request
-        put_request.httpBody = jsonData
-        var backToString = String(data: jsonData, encoding: String.Encoding.utf8) as String!
+        if (type == "alt"){
+             put_request.httpBody = alterJsonData
+        }
+        else {
+             put_request.httpBody = jsonData
+        }
+        
         group.enter()
         let put = URLSession.shared.dataTask(with: put_request) { data, response, error in
             guard let data = data, error == nil else {
@@ -328,118 +435,73 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
         group.wait()
     }
     
-    
-    func addUndoScore(text: String){
-        // create post request
-        var curr_score = 0
-        var json: [String: Int] = [:]
-        let url = URL(string: "https://api.myjson.com/bins/h6q7f")!
-        var request = URLRequest(url: url)
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpMethod = "GET"
-        group.enter()
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                print(error?.localizedDescription ?? "No data")
-                return
-            }
-            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [.allowFragments])
-            if let responseJSON = responseJSON as? [String: Int] {
-                json = responseJSON
-            }
-            self.group.leave()
-        }
-        task.resume()
-        group.wait()
-        
-        var jsonDict: [String: Any]
-        
-        if json[text] != nil {
-            curr_score = json[text] as! Int
-        }
-        
-        json[text] = curr_score + 1
-
-        jsonDict = json
-        
-        //let jsonDict = [text: curr_score]
-        let jsonData = try! JSONSerialization.data(withJSONObject: jsonDict, options: [])
-        let put_url = URL(string: "https://api.myjson.com/bins/h6q7f")!
-
-        var put_request = URLRequest(url: put_url)
-        put_request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        put_request.httpMethod = "PUT"
-
-        // insert json data to the request
-        put_request.httpBody = jsonData
-        
-        group.enter()
-        let put = URLSession.shared.dataTask(with: put_request) { data, response, error in
-            guard let data = data, error == nil else {
-                print(error?.localizedDescription ?? "No data")
-                return
-            }
-            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
-            if let responseJSON = responseJSON as? [String: Any] {
-                //print(responseJSON)
-            }
-            self.group.leave()
-        }
-        put.resume()
-        group.wait()
-    }
-    
+//    func addUndoScore(text: String){
+//        // create post request
+//        var curr_score = 0
+//        var json: [String: Int] = [:]
+//        let url = URL(string: "https://api.myjson.com/bins/h6q7f")!
+//        var request = URLRequest(url: url)
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.httpMethod = "GET"
+//        group.enter()
+//        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+//            guard let data = data, error == nil else {
+//                print(error?.localizedDescription ?? "No data")
+//                return
+//            }
+//            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [.allowFragments])
+//            if let responseJSON = responseJSON as? [String: Int] {
+//                json = responseJSON
+//            }
+//            self.group.leave()
+//        }
+//        task.resume()
+//        group.wait()
+//
+//        var jsonDict: [String: Any]
+//
+//        if json[text] != nil {
+//            curr_score = json[text] as! Int
+//        }
+//
+//        json[text] = curr_score + 1
+//
+//        jsonDict = json
+//
+//        //let jsonDict = [text: curr_score]
+//        let jsonData = try! JSONSerialization.data(withJSONObject: jsonDict, options: [])
+//        let put_url = URL(string: "https://api.myjson.com/bins/h6q7f")!
+//
+//        var put_request = URLRequest(url: put_url)
+//        put_request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        put_request.httpMethod = "PUT"
+//
+//        // insert json data to the request
+//        put_request.httpBody = jsonData
+//
+//        group.enter()
+//        let put = URLSession.shared.dataTask(with: put_request) { data, response, error in
+//            guard let data = data, error == nil else {
+//                print(error?.localizedDescription ?? "No data")
+//                return
+//            }
+//            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
+//            if let responseJSON = responseJSON as? [String: Any] {
+//                //print(responseJSON)
+//            }
+//            self.group.leave()
+//        }
+//        put.resume()
+//        group.wait()
+//    }
+//
     func getUndoPercent(text: String) -> Float {
-        print("getting percents")
-        var undo_json: [String: Int] = [:]
-        let undo_url = URL(string: "https://api.myjson.com/bins/h6q7f")!
-        var undo_request = URLRequest(url: undo_url)
-        undo_request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        undo_request.httpMethod = "GET"
-        group.enter()
-        let undo_task = URLSession.shared.dataTask(with: undo_request) { data, response, error in
-            guard let data = data, error == nil else {
-                print(error?.localizedDescription ?? "No data")
-                return
-            }
-            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [.allowFragments])
-            if let responseJSON = responseJSON as? [String: Int] {
-                undo_json = responseJSON
-            }
-            self.group.leave()
-        }
-        undo_task.resume()
-        group.wait()
-        
-        var json: [String: Int] = [:]
-        let url = URL(string: "https://api.myjson.com/bins/smgqj")!
-        var request = URLRequest(url: url)
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpMethod = "GET"
-        group.enter()
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                print(error?.localizedDescription ?? "No data")
-                return
-            }
-            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [.allowFragments])
-            if let responseJSON = responseJSON as? [String: Int] {
-                json = responseJSON
-            }
-            self.group.leave()
-        }
-        task.resume()
-        group.wait()
-        
-        print("undo scores \(undo_json)")
-        print("total scores \(json)")
-
-        if json[text] != nil && undo_json[text] != nil{
-            return Float(undo_json[text]!) / Float(json[text]!)
+        if totalDict[text] != nil && undoDict[text] != nil{
+            return Float(undoDict[text]!) / Float(totalDict[text]!)
         }
         return 0
     }
-    
+
 
     
     let group = DispatchGroup()
@@ -454,9 +516,10 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
         
         if self.textView.text != "" {
             let tempText = self.textView.text
-            addUndoScore(text: (tempText?.lastWord)!)
+            //addUndoScore(text: (tempText?.lastWord)!)
             var json = getAlternatives(url_param: (tempText?.lastWord)!)
             var offset = (tempText?.lastWord.count)!+1
+            undone = (tempText?.lastWord)!
             if offset > (tempText?.count)!{
                 offset = (tempText?.count)!
             }
@@ -527,7 +590,81 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
         
     }
     
+    func updateAlternates(key: String, newTop: String) {
+        var currAlt: [String: Int] = altDict[key]!
+        if (currAlt[newTop] != nil) {
+            var score = currAlt[newTop]
+            // replace current top with new top
+            // is it the 2nd or 3rd currently?
+            var keys = Array(currAlt.keys)
+            if (newTop == keys[1]){
+                print("NUMBER 2")
+                var score0 = currAlt[keys[0]]
+                var score2 = currAlt[keys[2]]
+                // it's 2nd
+                currAlt = [newTop: score! + 1, keys[0]: score0!, keys[2]: score2!]
+            }
+            else if (newTop == keys[2]){
+                print("NUMBER 3")
+                // it's 3rd
+                var score0 = currAlt[keys[0]]
+                var score1 = currAlt[keys[1]]
+                // it's 2nd
+                currAlt = [newTop: score! + 1, keys[0]: score0!, keys[1]: score1!]
+            }
+        }
+        else {
+            // new word that the user entered
+            var keys = Array(currAlt.keys)
+            var maxKey = ""
+            if (currAlt[keys[0]]! > currAlt[keys[1]]! && currAlt[keys[0]]! > currAlt[keys[2]]!){
+                // 0 is the max
+                maxKey = keys[0]
+            }
+            else if (currAlt[keys[1]]! > currAlt[keys[0]]! && currAlt[keys[1]]! > currAlt[keys[2]]!){
+                // 1 is the max
+                maxKey = keys[1]
+            }
+            else {
+                maxKey = keys[2]
+            }
+            var minKey = ""
+            if (currAlt[keys[0]]! < currAlt[keys[1]]! && currAlt[keys[0]]! < currAlt[keys[2]]!){
+                // 0 is the max
+                minKey = keys[0]
+            }
+            else if (currAlt[keys[1]]! < currAlt[keys[0]]! && currAlt[keys[1]]! < currAlt[keys[2]]!){
+                // 1 is the max
+                minKey = keys[1]
+            }
+            else {
+                minKey = keys[2]
+            }
+            
+            // find the other
+            var otherKey = ""
+            if ((maxKey == keys[0] && minKey == keys[1]) || (minKey == keys[0] && maxKey == keys[1])){
+                otherKey = keys[2]
+            }
+            else if ((maxKey == keys[0] && minKey == keys[2]) || (minKey == keys[0] && maxKey == keys[2])){
+                otherKey = keys[1]
+            }
+            else {
+                otherKey = keys[0]
+            }
+            
+            var maxScore = currAlt[maxKey]
+            var newTopScore = maxScore! + 1
+            var currCopy = currAlt
+            currAlt = [newTop: newTopScore, maxKey: currCopy[maxKey]!, otherKey: currCopy[otherKey]!]
+        }
+        altDict[key] = currAlt
+        print("ALT \(altDict)")
+    }
+    
     func getSelectedWord(_ word: String?) {
+        // word = the word the user selected from undo options
+        
         
         if self.textView.text.characters.last == " "{
             self.textView.text = self.textView.text + word!
@@ -536,6 +673,7 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
             self.textView.text = self.textView.text + " " + word!
         }
         currentText = self.textView.text
+        updateAlternates(key: undone, newTop: word!)
         print("it worked: ", word)
     }
     
