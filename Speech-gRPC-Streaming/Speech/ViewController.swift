@@ -28,6 +28,7 @@ var altArray: [String] = []
 var altDict: [String: [String: Int]] = [:]
 var totalDict: [String: Int] = [:]
 var undoDict: [String: Int] = [:]
+var undone = ""
 //var previousStringsStack = []
 
 let buttonColor = UIColor(red: 61/255.0, green: 136/255.0, blue: 209/255.0, alpha: 1.0)
@@ -171,7 +172,7 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
                             if let alternative = alternative as? SpeechRecognitionAlternative{
 
                                 //print("alternative transcript: ", alternative.transcript)
-                                if result.stability > 0.7 {
+                                if result.stability > 0.8 {
                                     if currentText.characters.last != " "{
                                         var percent = self?.getUndoPercent(text: (alternative.transcript.lastWord).trimmingCharacters(in: .whitespaces)) as! Float
                                         print("percent \(percent)")
@@ -224,15 +225,20 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
     
     // returns json string
     func getAlternatives(url_param: String) -> [String] {
+        var need_wait = false
         print("getting alternatives")
         var alternatives = [String]()
+        var altArray: [String: Int] = [:]
         // is it in the json?
         if (altDict[url_param] != nil) {
             print(altDict[url_param])
+            altArray = altDict[url_param]!
+            var keys = Array(altArray.keys)
+            alternatives = keys
         }
         else {
+            need_wait = true
             // get the words from datamuse and populate the json
-            
             var data: [String: AnyObject] = [:]
             let url = URL(string: "https://api.datamuse.com/words?sl=" + url_param)
             group.enter()
@@ -250,10 +256,22 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
                 }
                 self.group.leave()
             }).resume()
+            
         }
         
         
         group.wait()
+        if (need_wait){
+            print("ALTERNATIVES \(alternatives)")
+            var newJson: [String: Int] = [:]
+            for word in alternatives {
+                print("DIS WORD \(word)")
+                newJson[word] = 0
+            }
+            print("NEW JSON \(newJson)")
+            altDict[url_param] = newJson
+            print("ALT DICTIONARY \(altDict)")
+        }
         print("end of alternatives", alternatives)
         return alternatives
     }
@@ -446,6 +464,7 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
             //addUndoScore(text: (tempText?.lastWord)!)
             var json = getAlternatives(url_param: (tempText?.lastWord)!)
             var offset = (tempText?.lastWord.count)!+1
+            undone = (tempText?.lastWord)!
             if offset > (tempText?.count)!{
                 offset = (tempText?.count)!
             }
@@ -516,7 +535,81 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
         
     }
     
+    func updateAlternates(key: String, newTop: String) {
+        var currAlt: [String: Int] = altDict[key]!
+        if (currAlt[newTop] != nil) {
+            var score = currAlt[newTop]
+            // replace current top with new top
+            // is it the 2nd or 3rd currently?
+            var keys = Array(currAlt.keys)
+            if (newTop == keys[1]){
+                print("NUMBER 2")
+                var score0 = currAlt[keys[0]]
+                var score2 = currAlt[keys[2]]
+                // it's 2nd
+                currAlt = [newTop: score! + 1, keys[0]: score0!, keys[2]: score2!]
+            }
+            else if (newTop == keys[2]){
+                print("NUMBER 3")
+                // it's 3rd
+                var score0 = currAlt[keys[0]]
+                var score1 = currAlt[keys[1]]
+                // it's 2nd
+                currAlt = [newTop: score! + 1, keys[0]: score0!, keys[1]: score1!]
+            }
+        }
+        else {
+            // new word that the user entered
+            var keys = Array(currAlt.keys)
+            var maxKey = ""
+            if (currAlt[keys[0]]! > currAlt[keys[1]]! && currAlt[keys[0]]! > currAlt[keys[2]]!){
+                // 0 is the max
+                maxKey = keys[0]
+            }
+            else if (currAlt[keys[1]]! > currAlt[keys[0]]! && currAlt[keys[1]]! > currAlt[keys[2]]!){
+                // 1 is the max
+                maxKey = keys[1]
+            }
+            else {
+                maxKey = keys[2]
+            }
+            var minKey = ""
+            if (currAlt[keys[0]]! < currAlt[keys[1]]! && currAlt[keys[0]]! < currAlt[keys[2]]!){
+                // 0 is the max
+                minKey = keys[0]
+            }
+            else if (currAlt[keys[1]]! < currAlt[keys[0]]! && currAlt[keys[1]]! < currAlt[keys[2]]!){
+                // 1 is the max
+                minKey = keys[1]
+            }
+            else {
+                minKey = keys[2]
+            }
+            
+            // find the other
+            var otherKey = ""
+            if ((maxKey == keys[0] && minKey == keys[1]) || (minKey == keys[0] && maxKey == keys[1])){
+                otherKey = keys[2]
+            }
+            else if ((maxKey == keys[0] && minKey == keys[2]) || (minKey == keys[0] && maxKey == keys[2])){
+                otherKey = keys[1]
+            }
+            else {
+                otherKey = keys[0]
+            }
+            
+            var maxScore = currAlt[maxKey]
+            var newTopScore = maxScore! + 1
+            var currCopy = currAlt
+            currAlt = [newTop: newTopScore, maxKey: currCopy[maxKey]!, otherKey: currCopy[otherKey]!]
+        }
+        altDict[key] = currAlt
+        print("ALT \(altDict)")
+    }
+    
     func getSelectedWord(_ word: String?) {
+        // word = the word the user selected from undo options
+        
         
         if self.textView.text.characters.last == " "{
             self.textView.text = self.textView.text + word!
@@ -525,6 +618,7 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
             self.textView.text = self.textView.text + " " + word!
         }
         currentText = self.textView.text
+        updateAlternates(key: undone, newTop: word!)
         print("it worked: ", word)
     }
     
