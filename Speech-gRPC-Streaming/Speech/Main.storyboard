@@ -171,7 +171,14 @@
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </textAttributes>
                                 <items>
-                                    <navigationItem title="SpeakEasy" id="xCD-A5-Nn4"/>
+                                    <navigationItem title="SpeakEasy" id="xCD-A5-Nn4">
+                                        <barButtonItem key="rightBarButtonItem" title="Item" image="help_icon" id="921-65-vxt">
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <connections>
+                                                <action selector="helpButton:" destination="BYZ-38-t0r" id="lyZ-w1-lm2"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
                                 </items>
                             </navigationBar>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" editable="NO" text="Press &quot;Start Recording&quot; to begin converting speech to text! " textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="vtY-SX-V3c">
@@ -1348,6 +1355,7 @@
         <image name="action_icon" width="150" height="150"/>
         <image name="copy3" width="512" height="512"/>
         <image name="delete" width="512" height="512"/>
+        <image name="help_icon" width="33" height="30"/>
         <image name="record" width="360" height="360"/>
         <image name="settings_3" width="120" height="120"/>
         <image name="stop" width="360" height="360"/>
