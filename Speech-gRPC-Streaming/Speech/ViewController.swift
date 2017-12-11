@@ -25,9 +25,9 @@ let userDefaults =  UserDefaults.standard
 
 var currentText = ""
 var altArray: [String] = []
-var altDict: [String: [String: Int]]
-var totalDict: [String: Int]
-var undoDict: [String: Int]
+var altDict: [String: [String: Int]] = [:]
+var totalDict: [String: Int] = [:]
+var undoDict: [String: Int] = [:]
 //var previousStringsStack = []
 
 let buttonColor = UIColor(red: 61/255.0, green: 136/255.0, blue: 209/255.0, alpha: 1.0)
@@ -79,7 +79,13 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
     let backColor = UIColor(red: 20/255.0, green: 50/255.0, blue: 64/255.0, alpha: 1.0)
     
   override func viewDidLoad() {
-    
+    // initialize our arrays
+    getScore(type: "undo")
+    getScore(type: "total")
+    getScore(type: "alt")
+    print(totalDict)
+    print(undoDict)
+    print(altDict)
     super.viewDidLoad()
     self.stopStreaming.isHidden = true
     AudioController.sharedInstance.delegate = self
@@ -167,9 +173,9 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
                                 //print("alternative transcript: ", alternative.transcript)
                                 if result.stability > 0.8 {
                                     if currentText.characters.last != " "{
-                                        var percent = self?.getUndoPercent(text: (alternative.transcript.lastWord).trimmingCharacters(in: .whitespaces)) as! Float
-                                        print("percent \(percent)")
-                                        if percent > 0.60 {
+                                        //var percent = self?.getUndoPercent(text: (alternative.transcript.lastWord).trimmingCharacters(in: .whitespaces)) as! Float
+                                        //print("percent \(percent)")
+                                        //if percent > 0.60 {
                                             var alternatives = self?.getAlternatives(url_param: (alternative.transcript.lastWord).trimmingCharacters(in: .whitespaces))
                                             let tempText = strongSelf.textView.text
                                             var offset = (tempText?.lastWord.count)!+1
@@ -180,11 +186,11 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
                                                 strongSelf.textView.text = String(tempText![..<endIndex])    // pos is an index, it works
                                             }
                                             strongSelf.textView.text = currentText + " " + alternatives![0]
-                                        }
-                                        else{
+                                        //}
+                                        //else{
                                             strongSelf.textView.text = currentText + " " + alternative.transcript
-                                        }
-                                        self?.addTotalScore(text: (alternative.transcript.lastWord).trimmingCharacters(in: .whitespaces))
+                                        //}
+                                        //self?.addTotalScore(text: (alternative.transcript.lastWord).trimmingCharacters(in: .whitespaces))
                                         //print(self?.getUndoPercent(text: (strongSelf.textView.text.lastWord).trimmingCharacters(in: .whitespaces)))
                                     }
                                     
@@ -272,16 +278,21 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
     }
     
     func getScore(type: String){
+        var json: [String: Int] = [:]
+        var altJson: [String: [String: Int]] = [:]
+        var url = URL(string: "")
         if (type == "total"){
-            let url = URL(string: "https://api.myjson.com/bins/smgqj")!
+            url = URL(string: "https://api.myjson.com/bins/smgqj")!
+        }
+        else if (type == "undo"){
+            url = URL(string: "https://api.myjson.com/bins/h6q7f")!
         }
         else {
-            let url = URL(string: "https://api.myjson.com/bins/h6q7f")!
+            url = URL(string: "https://api.myjson.com/bins/1gftxr")!
         }
         // create post request
         var curr_score = 0
-        var json: [String: Int] = [:]
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: url!)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "GET"
         group.enter()
@@ -294,6 +305,9 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
             if let responseJSON = responseJSON as? [String: Int] {
                 json = responseJSON
             }
+            else if let responseJSON = responseJSON as? [String: [String: Int]]{
+                altJson = responseJSON
+            }
             self.group.leave()
         }
         task.resume()
@@ -301,9 +315,11 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
         if (type == "total") {
             totalDict = json
         }
-        else {
+        else if (type == "undo"){
             undoDict = json
         }
+        else {
+            altDict = altJson
     }
         
         
@@ -461,7 +477,7 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
         
         if self.textView.text != "" {
             let tempText = self.textView.text
-            addUndoScore(text: (tempText?.lastWord)!)
+            //addUndoScore(text: (tempText?.lastWord)!)
             var json = getAlternatives(url_param: (tempText?.lastWord)!)
             var offset = (tempText?.lastWord.count)!+1
             if offset > (tempText?.count)!{
