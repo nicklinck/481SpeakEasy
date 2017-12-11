@@ -173,9 +173,10 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
                                 //print("alternative transcript: ", alternative.transcript)
                                 if result.stability > 0.8 {
                                     if currentText.characters.last != " "{
-                                        //var percent = self?.getUndoPercent(text: (alternative.transcript.lastWord).trimmingCharacters(in: .whitespaces)) as! Float
-                                        //print("percent \(percent)")
-                                        //if percent > 0.60 {
+                                        var percent = self?.getUndoPercent(text: (alternative.transcript.lastWord).trimmingCharacters(in: .whitespaces)) as! Float
+                                        print("percent \(percent)")
+                                        // If it has been wrongly predicted 60% of the time or more, replace with next best contender
+                                        if percent > 0.60 {
                                             var alternatives = self?.getAlternatives(url_param: (alternative.transcript.lastWord).trimmingCharacters(in: .whitespaces))
                                             let tempText = strongSelf.textView.text
                                             var offset = (tempText?.lastWord.count)!+1
@@ -186,10 +187,10 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
                                                 strongSelf.textView.text = String(tempText![..<endIndex])    // pos is an index, it works
                                             }
                                             strongSelf.textView.text = currentText + " " + alternatives![0]
-                                        //}
-                                        //else{
+                                        }
+                                        else{
                                             strongSelf.textView.text = currentText + " " + alternative.transcript
-                                        //}
+                                        }
                                         //self?.addTotalScore(text: (alternative.transcript.lastWord).trimmingCharacters(in: .whitespaces))
                                         //print(self?.getUndoPercent(text: (strongSelf.textView.text.lastWord).trimmingCharacters(in: .whitespaces)))
                                     }
@@ -225,23 +226,32 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
     func getAlternatives(url_param: String) -> [String] {
         print("getting alternatives")
         var alternatives = [String]()
-        var data: [String: AnyObject] = [:]
-        let url = URL(string: "https://api.datamuse.com/words?sl=" + url_param)
-        group.enter()
-        URLSession.shared.dataTask(with: url!, completionHandler: {
-            (data, response, error) in
-            if(error != nil){
-                print("error")
-            }else{
-                do{
-                    let json = try JSON(data: data!)
-                    alternatives = [json[1]["word"].string!, json[2]["word"].string!, json[3]["word"].string!]
-                }catch let error as NSError{
-                    print(error)
+        // is it in the json?
+        if (altDict[url_param] != nil) {
+            print(altDict[url_param])
+        }
+        else {
+            // get the words from datamuse and populate the json
+            
+            var data: [String: AnyObject] = [:]
+            let url = URL(string: "https://api.datamuse.com/words?sl=" + url_param)
+            group.enter()
+            URLSession.shared.dataTask(with: url!, completionHandler: {
+                (data, response, error) in
+                if(error != nil){
+                    print("error")
+                }else{
+                    do{
+                        let json = try JSON(data: data!)
+                        alternatives = [json[1]["word"].string!, json[2]["word"].string!, json[3]["word"].string!]
+                    }catch let error as NSError{
+                        print(error)
+                    }
                 }
-            }
-            self.group.leave()
-        }).resume()
+                self.group.leave()
+            }).resume()
+        }
+        
         
         group.wait()
         print("end of alternatives", alternatives)
@@ -412,57 +422,13 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
 //        group.wait()
 //    }
 //
-//    func getUndoPercent(text: String) -> Float {
-//        print("getting percents")
-//        var undo_json: [String: Int] = [:]
-//        let undo_url = URL(string: "https://api.myjson.com/bins/h6q7f")!
-//        var undo_request = URLRequest(url: undo_url)
-//        undo_request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        undo_request.httpMethod = "GET"
-//        group.enter()
-//        let undo_task = URLSession.shared.dataTask(with: undo_request) { data, response, error in
-//            guard let data = data, error == nil else {
-//                print(error?.localizedDescription ?? "No data")
-//                return
-//            }
-//            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [.allowFragments])
-//            if let responseJSON = responseJSON as? [String: Int] {
-//                undo_json = responseJSON
-//            }
-//            self.group.leave()
-//        }
-//        undo_task.resume()
-//        group.wait()
-//
-//        var json: [String: Int] = [:]
-//        let url = URL(string: "https://api.myjson.com/bins/smgqj")!
-//        var request = URLRequest(url: url)
-//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.httpMethod = "GET"
-//        group.enter()
-//        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-//            guard let data = data, error == nil else {
-//                print(error?.localizedDescription ?? "No data")
-//                return
-//            }
-//            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [.allowFragments])
-//            if let responseJSON = responseJSON as? [String: Int] {
-//                json = responseJSON
-//            }
-//            self.group.leave()
-//        }
-//        task.resume()
-//        group.wait()
-//
-//        print("undo scores \(undo_json)")
-//        print("total scores \(json)")
-//
-//        if json[text] != nil && undo_json[text] != nil{
-//            return Float(undo_json[text]!) / Float(json[text]!)
-//        }
-//        return 0
-//    }
-//
+    func getUndoPercent(text: String) -> Float {
+        if totalDict[text] != nil && undoDict[text] != nil{
+            return Float(undoDict[text]!) / Float(totalDict[text]!)
+        }
+        return 0
+    }
+
 
     
     let group = DispatchGroup()
