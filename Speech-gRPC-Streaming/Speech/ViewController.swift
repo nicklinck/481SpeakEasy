@@ -120,6 +120,10 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
     
     @IBOutlet weak var stopStreaming: UIButton!
     @IBAction func stopAudio(_ sender: NSObject) {
+        // update json files
+        updateScore(type: "total")
+        updateScore(type: "undo")
+        updateScore(type: "alt")
     timer.invalidate()
     _ = AudioController.sharedInstance.stop()
     SpeechRecognitionService.sharedInstance.stopStreaming()
@@ -350,6 +354,8 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
             altDict = altJson
     }
         
+       
+        
         
         // KEEP: this is how we put the data back
 //        //let jsonDict = [text: curr_score]
@@ -379,6 +385,55 @@ class ViewController : UIViewController, UIPopoverPresentationControllerDelegate
 //        group.wait()
     }
     
+    func updateScore(type: String){
+        print("IN HERE")
+        var dict: [String: Int] = [:]
+        var alterDict: [String: [String:Int]] = [:]
+        var url = URL(string: "")
+        if (type == "total"){
+            url = URL(string: "https://api.myjson.com/bins/smgqj")!
+            dict = totalDict
+        }
+        else if (type == "undo"){
+            url = URL(string: "https://api.myjson.com/bins/h6q7f")!
+            dict = undoDict
+        }
+        else {
+            url = URL(string: "https://api.myjson.com/bins/1gftxr")!
+            alterDict = altDict
+        }
+        
+        let jsonData = try! JSONSerialization.data(withJSONObject: dict, options: [])
+        let alterJsonData = try! JSONSerialization.data(withJSONObject: alterDict, options: [])
+        let put_url = url
+
+        var put_request = URLRequest(url: put_url!)
+        put_request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        put_request.httpMethod = "PUT"
+
+        // insert json data to the request
+        if (type == "alt"){
+             put_request.httpBody = alterJsonData
+        }
+        else {
+             put_request.httpBody = jsonData
+        }
+        
+        group.enter()
+        let put = URLSession.shared.dataTask(with: put_request) { data, response, error in
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "No data")
+                return
+            }
+            let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
+            if let responseJSON = responseJSON as? [String: Any] {
+                //print(responseJSON)
+            }
+            self.group.leave()
+        }
+        put.resume()
+        group.wait()
+    }
     
 //    func addUndoScore(text: String){
 //        // create post request
