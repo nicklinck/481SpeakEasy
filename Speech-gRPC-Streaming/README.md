@@ -1,4 +1,4 @@
-# SpeakEasy Beta Release
+# SpeakEasy Omega Release
 
 This app demonstrates how to make streaming gRPC connections to the [Cloud Speech API](https://cloud.google.com/speech/) to recognize speech in recorded audio and using Datamuse API find words that match a given set of constraints and that are likely in a given context.
 
@@ -52,7 +52,7 @@ This app demonstrates how to make streaming gRPC connections to the [Cloud Speec
 
 - Find the line where the `API_KEY` is set. Replace the string value with the API key obtained from the Cloud console above. This key is the credential used to authenticate all requests to the Speech API. Calls to the API are thus associated with the project you created above, for access and billing purposes.
 
-- You are now ready to build and run the project. In Xcode you can do this by clicking the 'Play' button in the top left. This will launch the app on the simulator or on the device you've selected. Be sure that the 'Speech' target is selected in the popup near the top left of the Xcode window. 
+- You are now ready to build and run the project. In Xcode you can do this by clicking the 'Play' button in the top left. This will launch the app on the simulator or on the device you've selected. Be sure that the 'Speech' target is selected in the popup near the top left of the Xcode window. In order to run this on your phone, plug in an IOS device to your computer which has IOS 11.1 or higher. In Xcode, go to your project settings and under General -> Signing and change "team" to your apple ID account. Then simply run the Xcode Project and the app will get installed on your phone. 
 
 - Tap the `Start Streaming` button. This uses a custom AudioController class to capture audio in an in-memory instance of NSMutableData. When this data reaches a certain size, it is sent to the SpeechRecognitionService class, which streams it to the speech recognition service. Packets are streamed as instances of the RecognizeRequest object, and the first RecognizeRequest object sent also includes configuration information in an instance of InitialRecognizeRequest. As it runs, the AudioController logs the number of samples and average sample magnitude for each packet that it captures.
 
